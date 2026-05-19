@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 
 function Hero() {
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full h-dvh overflow-hidden">
       {/* Desktop image */}
       <Image
         src="/arowwai (7).png"
