@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fdf8e8;
+  --foreground: #1a0010;
+  --brand-primary: #700143;
+  --brand-light: #f8edaa;
+  --brand-primary-dark: #4a002c;
+  --brand-primary-light: #9c0059;
+  --brand-light-dark: #f0dc7a;
+  --muted-foreground: #7a4060;
 }
 
 @theme inline {
@@ -10,17 +16,84 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-light: var(--brand-light);
+  --color-brand-primary-dark: var(--brand-primary-dark);
+  --color-brand-primary-light: var(--brand-primary-light);
+  --color-brand-light-dark: var(--brand-light-dark);
+  --color-muted-foreground: var(--muted-foreground);
+
+  /* shadcn-style */
+  --color-primary: var(--brand-primary);
+  --color-primary-foreground: #f8edaa;
+  --color-secondary: var(--brand-light);
+  --color-secondary-foreground: #1a0010;
+  --color-accent: var(--brand-primary-light);
+  --color-accent-foreground: #f8edaa;
+  --color-ring: var(--brand-primary);
+  --color-input: #f0dc7a;
+  --color-border: #e0c96e;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-slow-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+.text-gradient-brand {
+  background: linear-gradient(135deg, #700143 0%, #9c0059 50%, #4a002c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-light {
+  background: linear-gradient(135deg, #f8edaa 0%, #fdf3c0 50%, #f0dc7a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, #700143 0%, #f8edaa 40%, #700143 60%, #4a002c 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+.floating {
+  animation: float 4s ease-in-out infinite;
 }
