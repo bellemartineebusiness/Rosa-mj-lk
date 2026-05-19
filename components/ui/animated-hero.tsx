@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { MoveRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const sharedStyle = "relative w-full h-svh bg-no-repeat bg-cover bg-top";
+const sharedStyle = "relative w-full h-screen bg-no-repeat bg-cover bg-top";
 
 function Hero() {
   return (
@@ -12,7 +12,7 @@ function Hero() {
       {/* Mobile */}
       <div
         className={`md:hidden ${sharedStyle}`}
-        style={{ backgroundImage: "url('/arowwai (14).png')" }}
+        style={{ backgroundImage: "url('/hero-mobile.png')" }}
       >
         <div className="absolute inset-0 bg-linear-to-t from-[#1a0010]/70 via-transparent to-transparent" />
         <CTAButtons />
@@ -21,7 +21,7 @@ function Hero() {
       {/* Desktop */}
       <div
         className={`hidden md:block ${sharedStyle}`}
-        style={{ backgroundImage: "url('/arowwai (7).png')" }}
+        style={{ backgroundImage: "url('/hero-desktop.png')" }}
       >
         <div className="absolute inset-0 bg-linear-to-t from-[#1a0010]/70 via-transparent to-transparent" />
         <CTAButtons />

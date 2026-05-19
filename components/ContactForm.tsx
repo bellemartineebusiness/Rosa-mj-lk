@@ -103,7 +103,7 @@ export default function ContactForm() {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-7">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-7" suppressHydrationWarning>
                 <h3 className="text-xl font-bold text-[#1a0010]">
                   Skicka ett meddelande
                 </h3>
@@ -119,6 +119,7 @@ export default function ContactForm() {
                       required
                       placeholder="Anna Svensson"
                       className={inputBase}
+                      suppressHydrationWarning
                     />
                     <ValidationError field="name" errors={state.errors} className="text-red-500 text-xs mt-1" />
                   </div>
@@ -132,6 +133,7 @@ export default function ContactForm() {
                       required
                       placeholder="anna@foretag.se"
                       className={inputBase}
+                      suppressHydrationWarning
                     />
                     <ValidationError field="email" errors={state.errors} className="text-red-500 text-xs mt-1" />
                   </div>
@@ -146,6 +148,7 @@ export default function ContactForm() {
                     name="company"
                     placeholder="Ditt företagsnamn"
                     className={inputBase}
+                    suppressHydrationWarning
                   />
                 </div>
 
@@ -153,7 +156,7 @@ export default function ContactForm() {
                   <label className="block text-xs font-semibold text-[#7a4060] mb-2 uppercase tracking-wide">
                     Tjänst
                   </label>
-                  <select name="service" className={`${inputBase} cursor-pointer`}>
+                  <select name="service" className={`${inputBase} cursor-pointer`} suppressHydrationWarning>
                     <option value="">Välj en tjänst...</option>
                     {services.map((s) => (
                       <option key={s} value={s}>{s}</option>
@@ -171,6 +174,7 @@ export default function ContactForm() {
                     rows={4}
                     placeholder="Berätta om ditt projekt..."
                     className={`${inputBase} resize-none`}
+                    suppressHydrationWarning
                   />
                   <ValidationError field="message" errors={state.errors} className="text-red-500 text-xs mt-1" />
                 </div>
