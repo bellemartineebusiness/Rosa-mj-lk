@@ -20,7 +20,7 @@ function Hero() {
       />
       {/* Mobile image */}
       <Image
-        src="/arowwai (12).png"
+        src="/arowwai (14).png"
         alt="Belle Martineé"
         fill
         quality={100}
