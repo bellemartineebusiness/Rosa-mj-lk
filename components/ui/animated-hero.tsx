@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { MoveRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const sharedStyle = "relative w-full h-dvh bg-no-repeat bg-cover bg-top";
+const sharedStyle = "relative w-full h-svh bg-no-repeat bg-cover bg-top";
 
 function Hero() {
   return (
