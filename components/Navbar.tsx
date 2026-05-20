@@ -89,7 +89,15 @@ export default function Navbar() {
                 </a>
               ))}
               <div className="pt-3 border-t border-[#f8edaa]">
-                <Button variant="default" size="sm" className="w-full">
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="w-full"
+                  onClick={() => {
+                    setOpen(false);
+                    document.getElementById("kontakt")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
                   Kom igång gratis
                 </Button>
               </div>
