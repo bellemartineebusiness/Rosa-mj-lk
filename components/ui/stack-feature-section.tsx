@@ -95,6 +95,7 @@ export default function FeatureSection() {
                     width: size,
                     height: size,
                     animation: `${reverse ? "spin-slow-reverse" : "spin-slow"} ${duration}s linear infinite`,
+                    willChange: "transform",
                   }}
                 >
                   {icons.map((cfg, iconIdx) => {
