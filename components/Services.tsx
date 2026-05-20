@@ -42,6 +42,7 @@ const packages = [
       { icon: Search,         title: "SEO" },
       { icon: Rocket,         title: "Lansering" },
       { icon: Megaphone,      title: "Snabb laddning" },
+      { icon: Target,         title: "Konvertering" },
     ],
     popular: false,
   },
