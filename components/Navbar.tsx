@@ -50,7 +50,11 @@ export default function Navbar() {
 
         {/* CTA */}
         <div className="hidden md:flex items-center gap-3 ml-auto">
-          <Button variant="default" size="sm">
+          <Button
+            variant="default"
+            size="sm"
+            onClick={() => document.getElementById("kontakt")?.scrollIntoView({ behavior: "smooth" })}
+          >
             Kom igång
           </Button>
         </div>

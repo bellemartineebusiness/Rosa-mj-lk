@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 const footerLinks = {
@@ -77,12 +78,21 @@ export default function Footer() {
               <ul className="flex flex-col gap-2.5">
                 {links.map((link) => (
                   <li key={link}>
-                    <a
-                      href="#"
-                      className="text-[#f8edaa]/50 hover:text-[#f8edaa] text-sm transition-colors"
-                    >
-                      {link}
-                    </a>
+                    {link === "Integritetspolicy" ? (
+                      <Link
+                        href="/integritetspolicy"
+                        className="text-[#f8edaa]/50 hover:text-[#f8edaa] text-sm transition-colors"
+                      >
+                        {link}
+                      </Link>
+                    ) : (
+                      <a
+                        href="#"
+                        className="text-[#f8edaa]/50 hover:text-[#f8edaa] text-sm transition-colors"
+                      >
+                        {link}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
