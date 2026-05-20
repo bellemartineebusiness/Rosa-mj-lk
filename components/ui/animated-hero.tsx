@@ -18,9 +18,18 @@ function Hero() {
         <CTAButtons />
       </div>
 
+      {/* iPad */}
+      <div
+        className={`hidden md:block lg:hidden ${sharedStyle}`}
+        style={{ backgroundImage: "url('/Organizer%20Desktop%20Wallpaper%20%285%29.png')" }}
+      >
+        <div className="absolute inset-0 bg-linear-to-t from-[#1a0010]/70 via-transparent to-transparent" />
+        <CTAButtons />
+      </div>
+
       {/* Desktop */}
       <div
-        className={`hidden md:block ${sharedStyle}`}
+        className={`hidden lg:block ${sharedStyle}`}
         style={{ backgroundImage: "url('/hero-desktop.png')" }}
       >
         <div className="absolute inset-0 bg-linear-to-t from-[#1a0010]/70 via-transparent to-transparent" />
