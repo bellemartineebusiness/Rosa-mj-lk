@@ -22,7 +22,7 @@ export default function ContactForm() {
     "w-full bg-transparent border-0 border-b border-[#d4b896] pb-3 pt-1 text-[#1a0010] placeholder-[#7a4060]/40 focus:outline-none focus:border-[#700143] transition-colors text-sm";
 
   return (
-    <section id="kontakt" className="py-24 bg-[#fdf8e8]">
+    <section id="kontakt" className="py-24 bg-[#fdf8e8] overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
