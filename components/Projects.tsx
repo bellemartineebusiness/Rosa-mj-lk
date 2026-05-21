@@ -150,11 +150,11 @@ export default function Projects() {
             transition={{ duration: 0.5 }}
           >
             <div className="inline-flex items-center gap-2 bg-[#700143]/10 border border-[#700143]/20 text-[#700143] px-4 py-2 rounded-full text-sm font-semibold mb-5">
-              Våra projekt
+              Projekt
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-[#1a0010] leading-tight">
-              Demon vi är{" "}
-              <span className="text-gradient-brand">stolta över</span>
+              Såhär ser det{" "}
+              <span className="text-gradient-brand">ut i verkligheten</span>
             </h2>
           </motion.div>
 
@@ -165,7 +165,7 @@ export default function Projects() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-[#7a4060] text-base max-w-sm md:text-right leading-relaxed"
           >
-            Dessa är demoprojekt som visar vad vi kan skapa. Ditt projekt blir det första riktiga.
+            Demo. Ditt projekt blir det första riktiga.
           </motion.p>
         </div>
 
@@ -186,7 +186,7 @@ export default function Projects() {
             href="#kontakt"
             className="inline-flex items-center gap-2 bg-[#700143] text-[#f8edaa] font-semibold px-8 py-4 rounded-2xl hover:bg-[#4a002c] transition-all duration-200 shadow-lg shadow-[#700143]/20 hover:shadow-xl hover:-translate-y-0.5"
           >
-            Starta ditt projekt
+            Jag vill ha en sådan
             <ArrowUpRight className="w-5 h-5" />
           </a>
         </motion.div>

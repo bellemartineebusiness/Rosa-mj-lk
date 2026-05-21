@@ -18,7 +18,7 @@ const packages = [
   {
     label: "Logotyp & Hemsida",
     price: "6 000",
-    description: "Allt du behöver för att synas professionellt.",
+    description: "Logotyp + hemsida. Allt på en gång.",
     features: [
       { icon: Palette,        title: "Logotyp" },
       { icon: LayoutTemplate, title: "Designsystem" },
@@ -34,7 +34,7 @@ const packages = [
   {
     label: "Hemsida",
     price: "4 000",
-    description: "En snygg hemsida som konverterar.",
+    description: "En hemsida som ser dyr ut. Fast billigare.",
     features: [
       { icon: LayoutTemplate, title: "Designsystem" },
       { icon: Globe,          title: "Mobil design" },
@@ -61,14 +61,14 @@ export default function Services() {
           className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 bg-[#700143]/10 border border-[#700143]/20 text-[#700143] px-4 py-2 rounded-full text-sm font-semibold mb-5">
-            Vårt erbjudande
+            Priser
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-[#1a0010] mb-4">
-            En snygg hemsida,{" "}
-            <span className="text-gradient-brand">ett pris</span>
+            Välj ditt paket,{" "}
+            <span className="text-gradient-brand">vi fixar resten</span>
           </h2>
           <p className="text-[#7a4060] text-lg max-w-xl mx-auto">
-            Inget krångel. Vi bygger en hemsida som ser professionell ut och konverterar.
+            Inga dolda avgifter. Inga långa processer. Bara en snygg hemsida som funkar.
           </p>
         </motion.div>
 
@@ -103,7 +103,7 @@ export default function Services() {
                     </span>
                     <span className="text-xl font-semibold text-[#7a4060] mb-1">kr</span>
                   </div>
-                  <p className="text-[#7a4060]/60 text-sm mt-1.5">Engångspris · Allt ingår</p>
+                  <p className="text-[#7a4060]/60 text-sm mt-1.5">Engångspris. Allt ingår.</p>
                 </div>
 
                 <div className="h-px bg-[#f0ebe0]" />
@@ -131,7 +131,7 @@ export default function Services() {
                 <div className="h-px bg-[#f0ebe0]" />
 
                 <div className="flex flex-col gap-2">
-                  {["Gratis konsultation", "Leverans inom 5 dagar", "Inga dolda avgifter"].map((g) => (
+                  {["Gratis första möte", "Klart på 5 dagar", "Inga dolda kostnader"].map((g) => (
                     <div key={g} className="flex items-center gap-2">
                       <div className="w-5 h-5 rounded-full bg-[#700143]/10 flex items-center justify-center shrink-0">
                         <Check className="w-3 h-3 text-[#700143]" />

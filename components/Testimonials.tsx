@@ -66,14 +66,14 @@ export default function Testimonials() {
             transition={{ duration: 0.5 }}
           >
             <div className="inline-flex items-center gap-2 bg-[#f8edaa]/15 border border-[#f8edaa]/25 text-[#f8edaa] px-4 py-2 rounded-full text-sm font-semibold mb-6">
-              Vad kunderna säger
+              Omdömen
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-[#f8edaa] mb-4">
-              Verkliga resultat,{" "}
-              <span className="text-gradient-light">riktiga kunder</span>
+              De som redan{" "}
+              <span className="text-gradient-light">vågade satsa</span>
             </h2>
             <p className="text-[#f8edaa]/70 text-lg max-w-2xl mx-auto">
-              Över 120 företag har redan förbättrat sina varumärken med oss.
+              Över 120 företag har redan testat oss. Här är vad de säger.
             </p>
           </motion.div>
         </div>
@@ -122,10 +122,10 @@ export default function Testimonials() {
           className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6"
         >
           {[
-            { value: "120+", label: "Nöjda kunder" },
-            { value: "4.9", label: "Snittbetyg" },
-            { value: "48h", label: "Leveranstid" },
-            { value: "98%", label: "Rekommenderar oss" },
+            { value: "120+", label: "Kunder" },
+            { value: "4.9", label: "Betyg" },
+            { value: "5 dagar", label: "Leveranstid" },
+            { value: "98%", label: "Kommer tillbaka" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <p className="text-4xl font-extrabold text-[#f8edaa] mb-1">{stat.value}</p>

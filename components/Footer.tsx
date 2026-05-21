@@ -23,17 +23,17 @@ export default function Footer() {
         <div className="max-w-6xl mx-auto px-6 py-14 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <h3 className="text-2xl md:text-3xl font-bold text-[#f8edaa] mb-1">
-              Redo att lyfta ditt varumärke?
+              Vad väntar du på?
             </h3>
             <p className="text-[#f8edaa]/70">
-              Kom igång idag. Gratis konsultation ingår alltid.
+              Första konsultationen kostar ingenting. Hör av dig idag.
             </p>
           </div>
           <a
             href="#kontakt"
             className="flex-shrink-0 inline-flex items-center gap-2 bg-[#f8edaa] text-[#700143] font-bold px-8 py-3 rounded-xl hover:bg-[#f0dc7a] transition-colors shadow-lg"
           >
-            Kom igång gratis
+            Kom igång
           </a>
         </div>
       </div>
@@ -53,8 +53,7 @@ export default function Footer() {
               />
             </div>
             <p className="text-[#f8edaa]/50 text-sm leading-relaxed mb-6">
-              Vi skapar starka varumärken med hjälp av AI och kreativt hantverk.
-              Snabbt, precist och vackert.
+              Vi gör hemsidor som säljer. Snabbt, billigt och utan krångel.
             </p>
             <div className="flex items-center gap-3">
               {[FaInstagram, FaLinkedin, FaTwitter].map((Icon, i) => (

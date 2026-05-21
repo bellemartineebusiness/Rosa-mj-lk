@@ -34,17 +34,14 @@ export default function ContactForm() {
             transition={{ duration: 0.6 }}
           >
             <div className="inline-flex items-center gap-2 bg-[#700143]/10 border border-[#700143]/20 text-[#700143] px-4 py-2 rounded-full text-sm font-semibold mb-6">
-              Kontakta oss
+              Kontakt
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-[#1a0010] mb-5">
-              Låt oss bygga{" "}
-              <span className="text-gradient-brand">något stort</span>
-              <br />
-              tillsammans
+              Hör av dig.{" "}
+              <span className="text-gradient-brand">Vi svarar snabbt.</span>
             </h2>
             <p className="text-[#7a4060] text-lg mb-10 leading-relaxed">
-              Berätta om ditt projekt och vi återkommer inom 24 timmar med ett
-              förslag. Första konsultationen är alltid gratis.
+              Berätta vad du behöver. Vi återkommer inom 24 timmar med ett förslag. Alltid gratis första gången.
             </p>
 
             <div className="flex flex-col gap-5">
@@ -75,11 +72,10 @@ export default function ContactForm() {
 
             <div className="mt-10 p-5 bg-[#700143]/5 rounded-2xl">
               <p className="text-sm font-semibold text-[#1a0010] mb-1">
-                Gratis första konsultation
+                Gratis första mötet
               </p>
               <p className="text-sm text-[#7a4060]">
-                Vi lyssnar på dina behov och ger ett skräddarsytt förslag utan
-                förpliktelser och helt kostnadsfritt.
+                Vi pratar igenom vad du vill ha. Inget köptvång, inga konstigheter.
               </p>
             </div>
           </motion.div>
@@ -105,7 +101,7 @@ export default function ContactForm() {
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-7" suppressHydrationWarning>
                 <h3 className="text-xl font-bold text-[#1a0010]">
-                  Skicka ett meddelande
+                  Vad vill du ha?
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
@@ -172,7 +168,7 @@ export default function ContactForm() {
                     name="message"
                     required
                     rows={4}
-                    placeholder="Berätta om ditt projekt..."
+                    placeholder="Berätta vad du vill ha..."
                     className={`${inputBase} resize-none`}
                     suppressHydrationWarning
                   />
@@ -199,7 +195,7 @@ export default function ContactForm() {
                 </Button>
 
                 <p className="text-center text-xs text-[#7a4060]">
-                  Vi svarar inom 24 timmar. Ingen spam, lovar.
+                  Svar inom 24h. Ingen spam.
                 </p>
               </form>
             )}

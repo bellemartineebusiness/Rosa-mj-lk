@@ -46,19 +46,18 @@ export default function FeatureSection() {
         <div className="w-full lg:w-1/2">
           <div className="inline-flex items-center gap-2 bg-[#700143]/30 border border-[#700143]/40 text-[#f8edaa] px-3 py-1.5 rounded-full text-xs font-semibold mb-6">
             <FaRobot className="w-3 h-3" />
-            AI-verktyg &amp; teknologi
+            Verktygen vi använder
           </div>
           <h2 className="text-4xl sm:text-5xl font-bold mb-5 text-[#f8edaa] leading-tight">
-            Byggt med de
-            <span className="text-gradient-light block">bästa verktygen</span>
+            Vi använder
+            <span className="text-gradient-light block">rätt verktyg</span>
           </h2>
           <p className="text-[#c4809a] mb-8 max-w-lg text-lg leading-relaxed">
-            Vi använder branschledande AI och designverktyg för att leverera
-            resultat som faktiskt funkar. Snabbt, precist och kostnadseffektivt.
+            Vi använder samma verktyg som de stora byråerna. Fast till ett bättre pris.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Button variant="light" size="lg" className="gap-2" asChild>
-              <a href="#projekt">Se hur vi arbetar <MoveRight className="w-4 h-4" /></a>
+              <a href="#projekt">Se resultaten <MoveRight className="w-4 h-4" /></a>
             </Button>
             <Button
               variant="outline"
@@ -66,7 +65,7 @@ export default function FeatureSection() {
               className="border-[#700143]/50 text-[#f8edaa] hover:bg-[#700143]/20 hover:text-[#f8edaa]"
               asChild
             >
-              <a href="#tjanster">Våra tjänster</a>
+              <a href="#tjanster">Priser</a>
             </Button>
           </div>
         </div>

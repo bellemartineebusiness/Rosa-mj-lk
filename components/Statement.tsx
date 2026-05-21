@@ -16,13 +16,13 @@ export default function Statement() {
             transition={{ duration: 0.7 }}
           >
             <p className="text-[#f8edaa]/50 text-sm font-bold uppercase tracking-[0.2em] mb-6">
-              Vad vi gör
+              Kort och gott
             </p>
             <h2 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-[#f8edaa] leading-[1.05] tracking-tight max-w-4xl">
-              Vi gör snygga hemsidor som folk minns.
+              Din hemsida ska sälja. Inte bara se bra ut.
             </h2>
             <p className="mt-5 text-[#f8edaa]/40 text-base font-semibold uppercase tracking-[0.18em]">
-              Egen design · Handgjord hero
+              Egen design · Byggd för konvertering
             </p>
           </motion.div>
 
@@ -34,14 +34,14 @@ export default function Statement() {
             className="flex flex-col md:flex-row md:items-end justify-between gap-8"
           >
             <p className="text-[#f8edaa]/60 text-lg md:text-xl leading-relaxed max-w-lg">
-              Från idé till lansering. Vi tar hand om design, kod och allt däremellan så du kan fokusera på det du är bäst på.
+              Du berättar vad du vill ha. Vi fixar resten — design, kod, lansering. Klart på 5 dagar.
             </p>
 
             <a
               href="#kontakt"
               className="inline-flex items-center gap-2 bg-[#f8edaa] text-[#700143] font-bold px-8 py-4 rounded-2xl hover:bg-white transition-all duration-200 shrink-0 self-start md:self-auto"
             >
-              Starta ditt projekt
+              Kom igång idag
               <ArrowUpRight className="w-5 h-5" />
             </a>
           </motion.div>
