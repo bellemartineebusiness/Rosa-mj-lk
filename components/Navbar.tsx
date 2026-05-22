@@ -100,7 +100,7 @@ export default function Navbar() {
                     document.getElementById("kontakt")?.scrollIntoView({ behavior: "smooth" });
                   }}
                 >
-                  Kom igång gratis
+                  Kom igång 
                 </Button>
               </div>
             </div>

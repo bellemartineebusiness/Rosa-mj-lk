@@ -149,7 +149,7 @@ export default function Services() {
                       : "bg-[#fdf8e8] text-[#700143] border border-[#700143]/20 hover:bg-[#700143]/5"
                   }`}
                 >
-                  Kom igång idag
+                  Kom igång 
                   <ArrowUpRight className="w-5 h-5" />
                 </a>
               </div>

@@ -41,7 +41,7 @@ export default function Statement() {
               href="#kontakt"
               className="inline-flex items-center gap-2 bg-[#f8edaa] text-[#700143] font-bold px-8 py-4 rounded-2xl hover:bg-white transition-all duration-200 shrink-0 self-start md:self-auto"
             >
-              Kom igång idag
+              Kom igång 
               <ArrowUpRight className="w-5 h-5" />
             </a>
           </motion.div>

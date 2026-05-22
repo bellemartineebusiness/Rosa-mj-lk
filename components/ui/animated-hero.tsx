@@ -53,7 +53,7 @@ function CTAButtons() {
         className="gap-3"
         onClick={() => document.getElementById("kontakt")?.scrollIntoView({ behavior: "smooth" })}
       >
-        Kom igång gratis <MoveRight className="w-5 h-5" />
+        Kom igång <MoveRight className="w-5 h-5" />
       </Button>
       <Button
         size="xl"
@@ -61,7 +61,7 @@ function CTAButtons() {
         className="gap-3 border-[#f8edaa]/40 text-[#f8edaa] hover:bg-[#f8edaa]/10 hover:border-[#f8edaa]"
         onClick={() => document.getElementById("projekt")?.scrollIntoView({ behavior: "smooth" })}
       >
-        Se vårt arbete
+       Vårt arbete
       </Button>
     </motion.div>
   );
