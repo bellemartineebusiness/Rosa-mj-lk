@@ -30,7 +30,7 @@ function Hero() {
       {/* Desktop */}
       <div
         className={`hidden lg:block ${sharedStyle}`}
-        style={{ backgroundImage: "url('/hero-desktop.png')" }}
+        style={{ backgroundImage: "url('/hero-desktop.png')", backgroundPosition: "center 40%" }}
       >
         <div className="absolute inset-0 bg-linear-to-t from-[#1a0010]/70 via-transparent to-transparent" />
         <CTAButtons />
