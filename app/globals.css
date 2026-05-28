@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fdf8e8;
-  --foreground: #1a0010;
-  --brand-primary: #700143;
-  --brand-light: #f8edaa;
-  --brand-primary-dark: #4a002c;
-  --brand-primary-light: #9c0059;
-  --brand-light-dark: #f0dc7a;
-  --muted-foreground: #7a4060;
+  --background: #ffffff;
+  --foreground: #1d1d1f;
+  --brand-primary: #0071e3;
+  --brand-light: #f5f5f7;
+  --brand-primary-dark: #005fcc;
+  --brand-primary-light: #2997ff;
+  --brand-light-dark: #e5e5e5;
+  --muted-foreground: #6e6e73;
 }
 
 @theme inline {
@@ -24,26 +24,15 @@
   --color-brand-light-dark: var(--brand-light-dark);
   --color-muted-foreground: var(--muted-foreground);
 
-  /* shadcn-style */
   --color-primary: var(--brand-primary);
-  --color-primary-foreground: #f8edaa;
-  --color-secondary: var(--brand-light);
-  --color-secondary-foreground: #1a0010;
-  --color-accent: var(--brand-primary-light);
-  --color-accent-foreground: #f8edaa;
-  --color-ring: var(--brand-primary);
-  --color-input: #f0dc7a;
-  --color-border: #e0c96e;
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes spin-slow-reverse {
-  from { transform: rotate(360deg); }
-  to { transform: rotate(0deg); }
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f5f5f7;
+  --color-secondary-foreground: #1d1d1f;
+  --color-accent: #2997ff;
+  --color-accent-foreground: #ffffff;
+  --color-ring: #0071e3;
+  --color-input: #e5e5e5;
+  --color-border: #e5e5e5;
 }
 
 @keyframes fade-up {
@@ -69,31 +58,22 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "SF Pro Display", Arial, sans-serif;
   overscroll-behavior-x: none;
 }
 
 .text-gradient-brand {
-  background: linear-gradient(135deg, #700143 0%, #9c0059 50%, #4a002c 100%);
+  background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .text-gradient-light {
-  background: linear-gradient(135deg, #f8edaa 0%, #fdf3c0 50%, #f0dc7a 100%);
+  background: linear-gradient(135deg, #1d1d1f 0%, #6e6e73 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
-
-.shimmer-text {
-  background: linear-gradient(90deg, #700143 0%, #f8edaa 40%, #700143 60%, #4a002c 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 3s linear infinite;
 }
 
 .floating {

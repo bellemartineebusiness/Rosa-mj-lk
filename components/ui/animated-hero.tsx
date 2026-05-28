@@ -14,7 +14,7 @@ function Hero() {
         className={`md:hidden ${sharedStyle}`}
         style={{ backgroundImage: "url('/hero-mobile.png')" }}
       >
-        <div className="absolute inset-0 bg-linear-to-t from-[#1a0010]/70 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
         <CTAButtons />
       </div>
 
@@ -23,7 +23,7 @@ function Hero() {
         className={`hidden md:block lg:hidden ${sharedStyle}`}
         style={{ backgroundImage: "url('/Organizer%20Desktop%20Wallpaper%20%285%29.png')" }}
       >
-        <div className="absolute inset-0 bg-linear-to-t from-[#1a0010]/70 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
         <CTAButtons />
       </div>
 
@@ -32,7 +32,7 @@ function Hero() {
         className={`hidden lg:block ${sharedStyle}`}
         style={{ backgroundImage: "url('/hero-desktop.png')", backgroundPosition: "center 40%" }}
       >
-        <div className="absolute inset-0 bg-linear-to-t from-[#1a0010]/70 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
         <CTAButtons />
       </div>
     </>
@@ -58,7 +58,7 @@ function CTAButtons() {
       <Button
         size="xl"
         variant="outline"
-        className="gap-3 border-[#f8edaa]/40 text-[#f8edaa] hover:bg-[#f8edaa]/10 hover:border-[#f8edaa]"
+        className="gap-3 border-white/40 text-white hover:bg-white/10 hover:border-white/70"
         onClick={() => document.getElementById("projekt")?.scrollIntoView({ behavior: "smooth" })}
       >
        Vårt arbete
