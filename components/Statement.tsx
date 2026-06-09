@@ -1,90 +1,61 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowUpRight, Zap } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 const stats = [
-  { number: "5",     unit: "dagar", label: "leveranstid" },
-  { number: "4 000", unit: "kr",    label: "startpris" },
-  { number: "100",   unit: "%",     label: "nöjd garanti" },
-  { number: "AI",    unit: "",      label: "driven process" },
+  { number: "5",     unit: "dagar", label: "Leveranstid" },
+  { number: "10 000", unit: "kr",    label: "Startpris" },
+  { number: "100",   unit: "%",     label: "Nöjd garanti" },
+  { number: "AI",    unit: "",      label: "Driven process" },
 ];
 
 export default function Statement() {
   return (
-    <section className="py-36 bg-secondary">
-      <div className="max-w-6xl mx-auto px-6">
+    <section className="py-20 md:py-36 bg-white">
+      <div className="max-w-6xl mx-auto px-6 md:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
 
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-10"
-        >
-          <div className="inline-flex items-center gap-2 bg-white border border-[#e5e5e5] text-[#6e6e73] px-4 py-2 rounded-full text-sm font-semibold">
-            <Zap className="w-3.5 h-3.5" />
-            Kort och gott
+          <div>
+            <p className="text-[11px] font-normal uppercase tracking-[0.2em] text-[#8e8e93] mb-6">Kort och gott</p>
+            <h2 className="text-3xl md:text-[clamp(2.4rem,5vw,4rem)] font-semibold leading-tight tracking-tight text-secondary-foreground mb-6">
+              En hemsida som{" "}
+              <span className="text-[#3a3a3c] font-normal italic">faktiskt</span>{" "}
+              gör jobbet.
+            </h2>
+            <p className="text-[#6e6e73] text-base font-normal leading-relaxed mb-8 max-w-sm">
+              Du berättar vad du vill ha. Vi tar hand om design, kod och lansering.
+            </p>
+            <a
+              href="#kontakt"
+              className="group inline-flex items-center gap-2.5 bg-[#E8440A] text-white font-normal px-7 py-3.5 rounded-full hover:bg-[#d03d09] transition-colors duration-200"
+            >
+              Kom igång
+              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+            </a>
           </div>
-        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.05 }}
-          className="mb-14"
-        >
-          <h2 className="text-[clamp(2.8rem,8vw,6rem)] font-bold leading-none tracking-tight text-secondary-foreground">
-            En hemsida som{" "}
-            <span className="text-gradient-brand italic">faktiskt</span>{" "}
-            gör jobbet.
-          </h2>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20"
-        >
-          <p className="text-[#6e6e73] text-xl leading-relaxed max-w-md">
-            Du berättar vad du vill ha. Vi tar hand om design, kod och lansering. Klart på 5 dagar.
-          </p>
-          <a
-            href="#kontakt"
-            className="inline-flex items-center gap-2.5 bg-ring text-white font-semibold px-8 py-4 rounded-full hover:bg-brand-primary-dark transition-all duration-200 shrink-0 self-start md:self-auto hover:-translate-y-0.5 hover:shadow-xl hover:shadow-ring/20 text-base"
-          >
-            Kom igång
-            <ArrowUpRight className="w-5 h-5" />
-          </a>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[#e5e5e5] rounded-3xl overflow-hidden"
-        >
-          {stats.map((stat) => (
-            <div key={stat.label} className="flex flex-col gap-2 py-8 px-8 bg-white">
-              <div className="flex items-end gap-1.5 leading-none">
-                <span className="text-4xl font-bold text-secondary-foreground tracking-tight tabular-nums">
-                  {stat.number}
+          <div className="grid grid-cols-2 gap-3">
+            {stats.map((stat) => (
+              <div
+                key={stat.label}
+                className="bg-[#0a0a0a] rounded-2xl p-7 flex flex-col gap-3"
+              >
+                <div className="flex items-end gap-1.5 leading-none">
+                  <span className="text-[2.8rem] font-semibold text-white tracking-tight leading-none">
+                    {stat.number}
+                  </span>
+                  {stat.unit && (
+                    <span className="text-base font-normal text-white/60 mb-0.5">{stat.unit}</span>
+                  )}
+                </div>
+                <span className="text-[10px] text-white/50 font-normal uppercase tracking-[0.2em]">
+                  {stat.label}
                 </span>
-                {stat.unit && (
-                  <span className="text-lg font-semibold text-ring mb-0.5">{stat.unit}</span>
-                )}
               </div>
-              <span className="text-xs text-[#8e8e93] font-medium uppercase tracking-widest">
-                {stat.label}
-              </span>
-            </div>
-          ))}
-        </motion.div>
+            ))}
+          </div>
 
+        </div>
       </div>
     </section>
   );

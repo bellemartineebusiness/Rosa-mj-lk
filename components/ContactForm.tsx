@@ -1,17 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Send, Mail, Phone, MapPin, CheckCircle, MessageCircle } from "lucide-react";
+import { Send, Mail, Phone, MapPin, CheckCircle } from "lucide-react";
 import { useForm, ValidationError } from "@formspree/react";
 
 const services = [
-  "Logotyp & Varumärke",
-  "Hemsida",
-  "Marknadsföring",
-  "Målgruppsanalys",
-  "AI-strategi",
-  "Social Media",
-  "Annat",
+  "Logotyp & Varumärke", "Hemsida", "Marknadsföring",
+  "Målgruppsanalys", "AI-strategi", "Social Media", "Annat",
 ];
 
 const contactItems = [
@@ -23,87 +17,83 @@ const contactItems = [
 export default function ContactForm() {
   const [state, handleSubmit] = useForm("mqejarqo");
 
-  const inputCls =
-    "w-full bg-white border border-[#e5e5e5] rounded-xl px-4 py-3 text-secondary-foreground placeholder-[#8e8e93] focus:outline-none focus:border-ring focus:ring-2 focus:ring-ring/10 transition-all text-sm";
+  const inputCls = "w-full bg-white border border-[#e8e8e8] rounded-xl px-4 py-3 text-secondary-foreground placeholder-[#a0a0a8] focus:outline-none focus:border-[#1d1d1f] focus:ring-2 focus:ring-black/5 transition-all text-sm font-normal";
 
   return (
-    <section id="kontakt" className="py-24 bg-secondary">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+    <section id="kontakt" className="py-20 md:py-36 bg-white">
+      <div className="max-w-6xl mx-auto px-6 md:px-8">
 
-          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <div className="inline-flex items-center gap-2 bg-white border border-[#e5e5e5] text-[#6e6e73] px-4 py-2 rounded-full text-sm font-semibold mb-6">
-              <MessageCircle className="w-3.5 h-3.5" />
-              Kontakt
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-secondary-foreground mb-5 tracking-tight">
-              Hör av dig.{" "}
-              <span className="text-gradient-brand">Vi svarar snabbt.</span>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+
+          <div
+            className="bg-[#0a0a0a] rounded-3xl p-6 md:p-10 flex flex-col h-full"
+          >
+            <p className="text-[11px] font-normal uppercase tracking-[0.2em] text-white/50 mb-6">Kontakt</p>
+            <h2 className="text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight leading-tight">
+              Hör av dig.
             </h2>
-            <p className="text-[#6e6e73] text-lg mb-10 leading-relaxed">
-              Berätta vad du behöver. Vi återkommer inom 24 timmar med ett förslag. Alltid gratis första gången.
+            <p className="text-white/70 text-xl font-normal mb-4 tracking-tight">Vi svarar snabbt.</p>
+            <p className="text-white/55 text-sm font-normal mb-10 leading-relaxed max-w-xs">
+              Berätta vad du behöver. Vi återkommer inom 24 timmar. Alltid gratis första gången.
             </p>
 
-            <div className="flex flex-col gap-3 mb-10">
+            <div className="flex flex-col gap-0 mb-10">
               {contactItems.map((item) => (
-                <div key={item.label} className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-[#e5e5e5]">
-                  <div className="w-10 h-10 rounded-xl bg-ring/8 flex items-center justify-center shrink-0">
-                    <item.icon className="w-4.5 h-4.5 text-ring" strokeWidth={1.8} />
-                  </div>
+                <div key={item.label} className="flex items-center gap-4 py-4 border-b border-white/8 last:border-0">
+                  <item.icon className="w-4 h-4 text-white/50 shrink-0" strokeWidth={1.5} />
                   <div className="min-w-0">
-                    <p className="text-[10px] font-semibold text-[#8e8e93] uppercase tracking-widest mb-0.5">{item.label}</p>
+                    <p className="text-[10px] font-normal uppercase tracking-[0.15em] text-white/50 mb-0.5">{item.label}</p>
                     {item.href ? (
-                      <a href={item.href} className="text-secondary-foreground text-sm font-medium hover:text-ring transition-colors truncate block">{item.value}</a>
+                      <a href={item.href} className="text-white/85 text-sm font-normal hover:text-white transition-colors truncate block">{item.value}</a>
                     ) : (
-                      <p className="text-secondary-foreground text-sm font-medium">{item.value}</p>
+                      <p className="text-white/70 text-sm font-normal">{item.value}</p>
                     )}
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="p-5 bg-ring/5 rounded-2xl border border-ring/10">
-              <p className="text-sm font-semibold text-secondary-foreground mb-1">Gratis första mötet</p>
-              <p className="text-sm text-[#6e6e73] leading-relaxed">
+            <div className="mt-auto p-5 bg-white/5 rounded-2xl border border-white/8">
+              <p className="text-sm font-medium text-white/90 mb-1">Gratis första mötet</p>
+              <p className="text-sm text-white/60 font-normal leading-relaxed">
                 Vi pratar igenom vad du vill ha. Inget köptvång, inga konstigheter.
               </p>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
-            <div className="border border-[#e5e5e5] rounded-3xl p-8 bg-white shadow-sm">
+          <div>
+            <div className="rounded-3xl p-6 md:p-10 bg-white border border-[#d0d0d0] h-full flex flex-col">
               {state.succeeded ? (
-                <div className="flex flex-col items-center justify-center py-20 gap-4 text-center">
-                  <div className="w-20 h-20 bg-ring/10 rounded-full flex items-center justify-center">
-                    <CheckCircle className="w-10 h-10 text-ring" />
+                <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
+                  <div className="w-14 h-14 bg-[#f0f0f0] rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-7 h-7 text-secondary-foreground" />
                   </div>
-                  <h3 className="text-2xl font-bold text-secondary-foreground">Meddelande skickat!</h3>
-                  <p className="text-[#6e6e73] max-w-xs">Tack för att du hörde av dig. Vi återkommer inom 24 timmar.</p>
+                  <h3 className="text-lg font-medium text-secondary-foreground">Meddelande skickat</h3>
+                  <p className="text-[#6e6e73] text-sm font-normal max-w-xs">Vi återkommer inom 24 timmar.</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="flex flex-col gap-5" suppressHydrationWarning>
-                  <h3 className="text-xl font-bold text-secondary-foreground mb-2">Vad vill du ha?</h3>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-5 flex-1" suppressHydrationWarning>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-semibold text-[#6e6e73] uppercase tracking-wide">Ditt namn *</label>
+                      <label className="text-[10px] font-normal text-[#6e6e73] font-normal uppercase tracking-[0.15em]">Namn *</label>
                       <input type="text" name="name" required placeholder="Anna Svensson" className={inputCls} suppressHydrationWarning />
                       <ValidationError field="name" errors={state.errors} className="text-red-500 text-xs" />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-semibold text-[#6e6e73] uppercase tracking-wide">E-post *</label>
+                      <label className="text-[10px] font-normal text-[#6e6e73] font-normal uppercase tracking-[0.15em]">E-post *</label>
                       <input type="email" name="email" required placeholder="anna@foretag.se" className={inputCls} suppressHydrationWarning />
                       <ValidationError field="email" errors={state.errors} className="text-red-500 text-xs" />
                     </div>
                   </div>
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-[#6e6e73] uppercase tracking-wide">Företag</label>
+                    <label className="text-[10px] font-normal text-[#6e6e73] font-normal uppercase tracking-[0.15em]">Företag</label>
                     <input type="text" name="company" placeholder="Ditt företagsnamn" className={inputCls} suppressHydrationWarning />
                   </div>
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-[#6e6e73] uppercase tracking-wide">Tjänst</label>
+                    <label className="text-[10px] font-normal text-[#6e6e73] font-normal uppercase tracking-[0.15em]">Tjänst</label>
                     <select name="service" className={`${inputCls} cursor-pointer`} suppressHydrationWarning>
                       <option value="">Välj en tjänst...</option>
                       {services.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -111,7 +101,7 @@ export default function ContactForm() {
                   </div>
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-[#6e6e73] uppercase tracking-wide">Meddelande *</label>
+                    <label className="text-[10px] font-normal text-[#6e6e73] font-normal uppercase tracking-[0.15em]">Meddelande *</label>
                     <textarea name="message" required rows={4} placeholder="Berätta vad du vill ha..." className={`${inputCls} resize-none`} suppressHydrationWarning />
                     <ValidationError field="message" errors={state.errors} className="text-red-500 text-xs" />
                   </div>
@@ -119,20 +109,20 @@ export default function ContactForm() {
                   <button
                     type="submit"
                     disabled={state.submitting}
-                    className="mt-2 w-full flex items-center justify-center gap-2 bg-ring hover:bg-brand-primary-dark text-white font-semibold text-sm py-3.5 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-ring/20 disabled:opacity-60"
+                    className="mt-1 w-full flex items-center justify-center gap-2 bg-[#E8440A] hover:bg-[#d03d09] text-white font-normal text-sm py-3.5 rounded-2xl transition-colors duration-200 hover:-translate-y-0.5 disabled:opacity-50"
                   >
                     {state.submitting ? (
-                      <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Skickar...</>
+                      <><span className="w-4 h-4 border border-white/30 border-t-white rounded-full animate-spin" />Skickar...</>
                     ) : (
                       <>Skicka meddelande <Send className="w-4 h-4" /></>
                     )}
                   </button>
 
-                  <p className="text-center text-xs text-[#8e8e93]">Svar inom 24h. Ingen spam.</p>
+                  <p className="text-center text-[11px] text-[#6e6e73] font-normal">Svar inom 24h. Ingen spam.</p>
                 </form>
               )}
             </div>
-          </motion.div>
+          </div>
 
         </div>
       </div>
