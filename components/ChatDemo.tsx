@@ -16,8 +16,10 @@ export default function ChatDemo({ botId = "support" }: { botId?: string }) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const isFirst = useRef(true);
 
   useEffect(() => {
+    if (isFirst.current) { isFirst.current = false; return; }
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
