@@ -66,6 +66,13 @@ html {
   overscroll-behavior: none;
 }
 
+@media (pointer: coarse) {
+  html, body {
+    touch-action: pan-y;
+    overscroll-behavior-x: none;
+  }
+}
+
 /* GPU-accelerate animated elements */
 [data-lenis-prevent] { overscroll-behavior: contain; }
 
