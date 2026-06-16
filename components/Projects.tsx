@@ -30,7 +30,7 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
       </div>
 
       {/* iframe preview */}
-      <div className="relative h-96 overflow-hidden">
+      <div className="relative h-96 overflow-hidden" style={{ isolation: "isolate" }}>
         <iframe
           src={project.url}
           className="absolute top-0 left-0 w-[200%] h-[200%] origin-top-left scale-50 border-0 pointer-events-none"

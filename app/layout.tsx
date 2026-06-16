@@ -83,7 +83,7 @@ export default function RootLayout({
   return (
     <html
       lang="sv"
-      className={`${geistSans.variable} ${geistMono.variable} ${caveat.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${caveat.variable} h-full antialiased overflow-x-hidden`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col overflow-x-hidden">
