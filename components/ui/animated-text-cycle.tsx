@@ -36,8 +36,8 @@ export default function AnimatedTextCycle({
 
   const containerVariants = {
     hidden:  { y: -20, opacity: 0, filter: "blur(8px)" },
-    visible: { y: 0,   opacity: 1, filter: "blur(0px)", transition: { duration: 0.4, ease: "easeOut" } },
-    exit:    { y: 20,  opacity: 0, filter: "blur(8px)", transition: { duration: 0.3, ease: "easeIn" } },
+    visible: { y: 0,   opacity: 1, filter: "blur(0px)", transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] as const } },
+    exit:    { y: 20,  opacity: 0, filter: "blur(8px)", transition: { duration: 0.3, ease: [0.4, 0, 1, 1] as const } },
   };
 
   return (
