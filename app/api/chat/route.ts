@@ -8,7 +8,7 @@ import { sendLeadNotification, sendCustomerConfirmation, sendSlackNotification }
 import { createCalendarEvent, checkSlotAvailability, getFreeSlots } from "@/lib/googleCalendar";
 import { logger } from "@/lib/logger";
 
-const claude = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+function getClaude() { return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }); }
 
 const MAX_MESSAGE_LENGTH = 500;
 const MAX_HISTORY        = 10;
@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
   // ── 8. Anropa Claude ──────────────────────────────────────
   let raw = "";
   try {
-    const response = await claude.messages.create({
+    const response = await getClaude().messages.create({
       model: "claude-sonnet-4-6",
       max_tokens: 512,
       system: systemPrompt,
@@ -118,8 +118,9 @@ export async function POST(req: NextRequest) {
       .map((b) => b.text)
       .join("");
   } catch (err) {
-    logger.error("claude_error", { error: String(err) });
-    return NextResponse.json({ error: "Kunde inte nå AI:n. Försök igen." }, { status: 500 });
+    const msg = String(err);
+    logger.error("claude_error", { error: msg });
+    return NextResponse.json({ error: "Kunde inte nå AI:n. Försök igen.", debug: msg }, { status: 500 });
   }
 
   // ── 9. Parsa JSON-svar ────────────────────────────────────
