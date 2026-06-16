@@ -1,6 +1,8 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
 function formatIcsDate(date: Date): string {
   return date.toISOString().replace(/[-:.]/g, "").slice(0, 15) + "Z";
@@ -62,7 +64,7 @@ export async function sendBookingNotification({
   const icsB64  = Buffer.from(ics).toString("base64");
   const safeName = name.toLowerCase().replace(/\s+/g, "-");
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: "Belle Martineé <info@bellemartinee.se>",
     to,
     subject: `Ny bokning – ${name}${date ? ` · ${date}` : ""}${time ? ` ${time}` : ""}`,

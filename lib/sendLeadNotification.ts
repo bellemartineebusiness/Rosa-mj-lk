@@ -1,6 +1,8 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
 type LeadData = {
   name?: string;
@@ -45,7 +47,7 @@ export async function sendLeadNotification({
       </td></tr>`)
     .join("");
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: "Belle Martineé <info@bellemartinee.se>",
     to,
     subject,
@@ -101,7 +103,7 @@ export async function sendCustomerConfirmation({
 }) {
   const isBooking = action === "booking";
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: `${companyName} <info@bellemartinee.se>`,
     to,
     subject: isBooking ? "Din bokningsförfrågan är mottagen" : "Tack för ditt meddelande",

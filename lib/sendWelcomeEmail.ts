@@ -1,8 +1,7 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function sendWelcomeEmail(email: string, customerId: string) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bellemartinee.se";
   const dashboardUrl = `${siteUrl}/dashboard/${customerId}`;
   const embedCode = `&lt;script src="${siteUrl}/widget.js" data-customer-id="${customerId}"&gt;&lt;/script&gt;`;
