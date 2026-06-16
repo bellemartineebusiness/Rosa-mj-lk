@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { label: "Tjänster", href: "#tjanster" },
-  { label: "Projekt",  href: "#projekt" },
-  { label: "Kontakt",  href: "#kontakt" },
+  { label: "Priser",  href: "#tjanster" },
+  { label: "Demo",    href: "#projekt" },
+  { label: "FAQ",            href: "#faq" },
+  { label: "Kontakt", href: "#kontakt" },
 ];
 
 function scrollTo(id: string) {

@@ -19,6 +19,7 @@ export type PricingCardTwoProps = {
   name: string;
   subtitle?: string;
   price: number | string;
+  originalPrice?: number | string;
   currency?: string;
   periodLabel?: string;
   features: PricingFeature[];
@@ -168,6 +169,7 @@ export default function PricingCardTwo({
   name,
   subtitle,
   price,
+  originalPrice,
   currency = '',
   periodLabel,
   features,
@@ -216,7 +218,15 @@ export default function PricingCardTwo({
           )}
 
           <div className={cn('mt-6 text-center', t.accent, priceClassName)}>
-            <span className='text-5xl font-bold leading-none tracking-tight'>{pp.main}</span>
+            <div className={cn('mb-2 flex flex-col items-center gap-0.5', !originalPrice && 'invisible')}>
+              <span className='rounded-full bg-[#E8440A] px-2 py-0.5 text-[10px] font-semibold text-white tracking-wide uppercase'>
+                Early access
+              </span>
+              <span className={cn('text-base line-through font-medium', tone === 'dark' ? 'text-white/35' : 'text-zinc-400')}>
+                {originalPrice ? (typeof originalPrice === 'number' ? `${currency}${originalPrice}` : originalPrice) : ' '}
+              </span>
+            </div>
+            <div className='text-5xl font-bold leading-none tracking-tight'>{pp.main}</div>
             {periodLabel && (
               <span className={cn(
                 'ml-1 text-sm',
@@ -263,7 +273,7 @@ export default function PricingCardTwo({
                 href={cta.href}
                 aria-label={cta['aria-label'] ?? `Välj ${name}`}
                 className={cn(
-                  'mt-8 inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-sm font-normal transition-all duration-200',
+                  'mt-8 inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-sm font-normal transition-all duration-200 cursor-pointer',
                   t.btn, t.btnHover, ctaClassName
                 )}
               >
@@ -275,7 +285,7 @@ export default function PricingCardTwo({
                 onClick={(cta as any).onClick}
                 aria-label={cta['aria-label'] ?? `Välj ${name}`}
                 className={cn(
-                  'mt-8 inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-sm font-normal transition-all duration-200',
+                  'mt-8 inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-sm font-normal transition-all duration-200 cursor-pointer',
                   t.btn, t.btnHover, ctaClassName
                 )}
               >

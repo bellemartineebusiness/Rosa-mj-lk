@@ -2,7 +2,12 @@ import Navbar from "@/components/Navbar";
 import Services from "@/components/Services";
 import Projects from "@/components/Projects";
 import Statement from "@/components/Statement";
+import FAQ from "@/components/FAQ";
+import HowItWorks from "@/components/HowItWorks";
+import CalendarSetup from "@/components/CalendarSetup";
 import TextDisclaimer from "@/components/TextDisclaimer";
+import WhyUs from "@/components/WhyUs";
+import Guarantee from "@/components/Guarantee";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 
@@ -21,8 +26,13 @@ export default function Home() {
             />
           </picture>
         </section>
+        <HowItWorks />
+        <CalendarSetup />
         <TextDisclaimer />
+        <WhyUs />
+        <Guarantee />
         <Services />
+        <FAQ />
         <Projects />
         <Statement />
         <ContactForm />

@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Customer {
+  id             String            @id @default(cuid())
+  email          String?           @unique
+  name           String
+  slug           String            @unique
+  createdAt      DateTime          @default(now())
+  settings       CustomerSettings?
+  knowledgeBases KnowledgeBase[]
+  bookingConfig  BookingConfig?
+}
+
+model CustomerSettings {
+  id           String   @id @default(cuid())
+  customerId   String   @unique
+  customer     Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  systemPrompt String   @db.Text
+  language     String   @default("sv")
+  tone         String   @default("friendly")
+  primaryColor String   @default("#E8440A")
+  updatedAt    DateTime @updatedAt
+}
+
+model KnowledgeBase {
+  id         String   @id @default(cuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  title      String
+  content    String   @db.Text
+  createdAt  DateTime @default(now())
+}
+
+model BookingConfig {
+  id         String   @id @default(cuid())
+  customerId String   @unique
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  provider   String   @default("custom_api")
+  apiKey     String?
+  calendarId String?
+  webhookUrl String?
+  enabled    Boolean  @default(false)
+}

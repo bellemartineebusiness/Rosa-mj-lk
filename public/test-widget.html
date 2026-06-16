@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Testsite — Min Bot</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, sans-serif; background: #f5f5f7; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 40px; }
+    h1 { font-size: 2rem; color: #1d1d1f; }
+    p { color: #6e6e73; max-width: 400px; text-align: center; line-height: 1.6; }
+    .card { background: white; border-radius: 20px; padding: 40px; text-align: center; max-width: 480px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Min testsite</h1>
+    <p style="margin-top:12px">Klicka på knappen nere till höger för att testa din chattbot.</p>
+  </div>
+
+  <!--
+    BYTA UT: Ersätt YOUR_CUSTOMER_ID nedan med ditt riktiga customer ID
+    från din dashboard på localhost:3000/dashboard/[ditt-id]
+  -->
+  <script src="http://localhost:3000/widget.js" data-customer-id="0fb2136e-af25-4534-ba57-db34db4dc32a"></script>
+</body>
+</html>

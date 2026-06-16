@@ -30,8 +30,7 @@ export default function Integritetspolicy() {
             <h2 className="text-xl font-bold mb-2">1. Vem är ansvarig för dina uppgifter?</h2>
             <p className="text-[#7a4060] leading-relaxed">
               Belle Martineé, Stockholm, Sverige.<br />
-              E-post: <a href="mailto:Bellemartinee.busines@gmail.com" className="text-[#700143] hover:underline">Bellemartinee.busines@gmail.com</a><br />
-              Telefon: <a href="tel:+46708670050" className="text-[#700143] hover:underline">+46 70 867 00 50</a>
+              E-post: <a href="mailto:info@bellemartinee.se" className="text-[#700143] hover:underline">info@bellemartinee.se</a>
             </p>
           </section>
 

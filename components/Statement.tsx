@@ -3,10 +3,10 @@
 import { ArrowUpRight } from "lucide-react";
 
 const stats = [
-  { number: "5",     unit: "dagar", label: "Leveranstid" },
-  { number: "10 000", unit: "kr",    label: "Startpris" },
-  { number: "100",   unit: "%",     label: "Nöjd garanti" },
-  { number: "AI",    unit: "",      label: "Driven process" },
+  { number: "24/7", unit: "",    label: "Alltid tillgänglig" },
+  { number: "~3",   unit: "sek", label: "Svarstid" },
+  { number: "100",  unit: "%",   label: "Nöjd garanti" },
+  { number: "AI",   unit: "",    label: "Driven process" },
 ];
 
 export default function Statement() {
@@ -18,12 +18,12 @@ export default function Statement() {
           <div>
             <p className="text-[11px] font-normal uppercase tracking-[0.2em] text-[#8e8e93] mb-6">Kort och gott</p>
             <h2 className="text-3xl md:text-[clamp(2.4rem,5vw,4rem)] font-semibold leading-tight tracking-tight text-secondary-foreground mb-6">
-              En hemsida som{" "}
+              En chattbot som{" "}
               <span className="text-[#3a3a3c] font-normal italic">faktiskt</span>{" "}
-              gör jobbet.
+              hjälper dina kunder.
             </h2>
             <p className="text-[#6e6e73] text-base font-normal leading-relaxed mb-8 max-w-sm">
-              Du berättar vad du vill ha. Vi tar hand om design, kod och lansering.
+              Du berättar om ditt företag. Vi bygger en AI-chattbot som svarar på dina kunders frågor med rätt information, dygnet runt.
             </p>
             <a
               href="#kontakt"
@@ -41,14 +41,14 @@ export default function Statement() {
                 className="bg-[#0a0a0a] rounded-2xl p-7 flex flex-col gap-3"
               >
                 <div className="flex items-end gap-1.5 leading-none">
-                  <span className="text-[2.8rem] font-semibold text-white tracking-tight leading-none">
+                  <span className="text-[2.8rem] font-bold text-white tracking-tight leading-none">
                     {stat.number}
                   </span>
                   {stat.unit && (
-                    <span className="text-base font-normal text-white/60 mb-0.5">{stat.unit}</span>
+                    <span className="text-base font-semibold text-white/80 mb-0.5">{stat.unit}</span>
                   )}
                 </div>
-                <span className="text-[10px] text-white/50 font-normal uppercase tracking-[0.2em]">
+                <span className="text-[10px] text-white/70 font-semibold uppercase tracking-[0.2em]">
                   {stat.label}
                 </span>
               </div>

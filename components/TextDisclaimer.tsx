@@ -13,7 +13,7 @@ export default function TextDisclaimer() {
             <div className="mb-6">
               <span className="text-4xl md:text-5xl font-semibold text-secondary-foreground tracking-tight">
                 <Typewriter
-                  text={["Logotyp.", "Hemsida.", "Varumärke.", "Konvertering."]}
+                  text={["Chattbot.", "Support.", "Kundtjänst.", "Automatisering."]}
                   speed={60}
                   deleteSpeed={35}
                   waitTime={1800}
@@ -25,7 +25,7 @@ export default function TextDisclaimer() {
 
             <h2 className="text-xl md:text-2xl font-semibold text-secondary-foreground leading-tight tracking-tight mb-6">
               Du pratar.{" "}
-              <span className="text-secondary-foreground/60 font-normal">Vi bygger.</span>
+              <span className="text-secondary-foreground/60 font-normal">Vi automatiserar.</span>
             </h2>
 
             <a

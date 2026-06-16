@@ -108,7 +108,7 @@ export function BentoPricing() {
           </div>
         </div>
         <ul className="grid gap-3.5 p-5 text-sm">
-          {['Gratis första mötet', 'Klart på 5 arbetsdagar', 'Inga dolda kostnader'].map((f) => (
+          {['Kontakt via Linkedin eller mail', 'Klart på 5 arbetsdagar', 'Inga dolda kostnader'].map((f) => (
             <li key={f} className="flex items-center gap-3">
               <Clock className="size-3.5 text-foreground/25 shrink-0" strokeWidth={1.8} />
               <span className="text-foreground/55 font-normal">{f}</span>
