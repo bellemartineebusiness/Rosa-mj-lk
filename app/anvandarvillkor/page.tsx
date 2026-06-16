@@ -47,7 +47,6 @@ export default function Anvandarvillkor() {
             <ul className="list-disc list-inside text-[#7a4060] leading-relaxed space-y-1 ml-1">
               <li>Att alla kundsvar är korrekta — AI kan göra misstag</li>
               <li>Automatisk bekräftelse av bokningar — det sker manuellt av dig</li>
-              <li>Koppling till externa kalendersystem (Google Calendar OAuth planeras)</li>
               <li>100 % drifttid — vi strävar efter hög tillgänglighet men kan inte garantera det</li>
               <li>Att boten ersätter mänsklig kundtjänst i komplexa ärenden</li>
             </ul>
@@ -66,14 +65,14 @@ export default function Anvandarvillkor() {
           <section>
             <h2 className="text-xl font-bold mb-2">5. Uppsägning</h2>
             <p className="text-[#7a4060] leading-relaxed">
-              Du kan säga upp tjänsten när som helst utan bindningstid. Uppsägning sker via e-post till <a href="mailto:support@bellemartinee.se" className="text-[#700143] hover:underline">support@bellemartinee.se</a>. Tjänsten fortsätter till slutet av innevarande betalningsperiod.
+              Du kan säga upp tjänsten när som helst utan bindningstid. Uppsägning sker direkt i din dashboard eller via e-post till <a href="mailto:support@bellemartinee.se" className="text-[#700143] hover:underline">support@bellemartinee.se</a>. Tjänsten fortsätter till slutet av innevarande betalningsperiod.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold mb-2">6. Ångerrätt</h2>
             <p className="text-[#7a4060] leading-relaxed">
-              Som konsument har du 14 dagars ångerrätt från köpdatum i enlighet med distansavtalslagen. Ångerrätten gäller under förutsättning att tjänsten inte har tagits i bruk. Om botten redan har aktiverats och installerats på din hemsida anses tjänsten påbörjad och ångerrätten upphör. Kontakta <a href="mailto:support@bellemartinee.se" className="text-[#700143] hover:underline">support@bellemartinee.se</a> för att begära återbetalning.
+              Som konsument har du 14 dagars ångerrätt från köpdatum. Du kan testa tjänsten och ändå begära full återbetalning inom 14 dagar om du inte är nöjd. Kontakta <a href="mailto:support@bellemartinee.se" className="text-[#700143] hover:underline">support@bellemartinee.se</a> för att begära återbetalning.
             </p>
           </section>
 

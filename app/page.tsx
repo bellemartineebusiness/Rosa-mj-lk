@@ -6,6 +6,7 @@ import FAQ from "@/components/FAQ";
 import HowItWorks from "@/components/HowItWorks";
 import CalendarSetup from "@/components/CalendarSetup";
 import TextDisclaimer from "@/components/TextDisclaimer";
+import Intro from "@/components/Intro";
 import WhyUs from "@/components/WhyUs";
 import Guarantee from "@/components/Guarantee";
 import ContactForm from "@/components/ContactForm";
@@ -29,6 +30,7 @@ export default function Home() {
         <HowItWorks />
         <CalendarSetup />
         <TextDisclaimer />
+        <Intro />
         <WhyUs />
         <Guarantee />
         <Services />
