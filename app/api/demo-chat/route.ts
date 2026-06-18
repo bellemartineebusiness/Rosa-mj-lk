@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit } from "@/lib/rateLimit";
 
-const claude = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+function getClaude() { return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }); }
 
 const DEMO_SYSTEM_PROMPT = `Du är en AI-chattbot som demonstrerar vad Belle Martineés chatbottar kan göra för ett företag.
 
@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
     }));
 
   try {
-    const response = await claude.messages.create({
+    const response = await getClaude().messages.create({
       model: "claude-sonnet-4-6",
       max_tokens: 256,
       system: DEMO_SYSTEM_PROMPT,
