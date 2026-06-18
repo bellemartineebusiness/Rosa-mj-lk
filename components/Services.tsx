@@ -4,23 +4,19 @@ import { useState } from "react";
 import { X, Loader } from "lucide-react";
 import PricingCardTwo from "@/components/ui/pricing-card-triple";
 import { Globe, Layers, MessageCircle } from "lucide-react";
-import { useLang } from "@/contexts/LangContext";
-import { tx } from "@/lib/translations";
 
 export default function Services() {
   const [modal, setModal] = useState(false);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { lang } = useLang();
-  const t = tx(lang).services;
 
   function openModal() { setModal(true); setEmail(""); setError(""); }
   function closeModal() { setModal(false); setEmail(""); setError(""); }
 
   async function handleCheckout() {
-    if (!email.trim()) { setError(t.modal.errorEmpty); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError(t.modal.errorInvalid); return; }
+    if (!email.trim()) { setError("Ange din e-postadress."); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError("Ogiltig e-postadress."); return; }
     setLoading(true);
     setError("");
     try {
@@ -30,10 +26,10 @@ export default function Services() {
         body: JSON.stringify({ email, priceId: "starter" }),
       });
       const data = await res.json();
-      if (!res.ok || !data.url) { setError(data.error ?? t.modal.errorFail); return; }
+      if (!res.ok || !data.url) { setError(data.error ?? "Något gick fel."); return; }
       window.location.href = data.url;
     } catch {
-      setError(t.modal.errorNetwork);
+      setError("Kunde inte nå betalningssidan. Försök igen.");
     } finally {
       setLoading(false);
     }
@@ -45,9 +41,9 @@ export default function Services() {
         <div className="max-w-5xl mx-auto px-6 md:px-8">
 
           <div className="mb-10 md:mb-16 text-center">
-            <p className="text-[11px] font-normal uppercase tracking-[0.25em] text-[#8e8e93] mb-5">{t.tag}</p>
+            <p className="text-[11px] font-normal uppercase tracking-[0.25em] text-[#8e8e93] mb-5">Priser</p>
             <h2 className="text-4xl md:text-[3.25rem] font-semibold text-secondary-foreground tracking-tight leading-tight">
-              {t.heading}
+              Enkelt. Transparent. Klart.
             </h2>
           </div>
 
@@ -56,44 +52,65 @@ export default function Services() {
               tone="red"
               icon={<MessageCircle className="w-8 h-8" />}
               name="Starter"
-              subtitle={t.starter.subtitle}
-              price={t.starter.price}
-              originalPrice={t.starter.originalPrice}
-              periodLabel={t.starter.period}
-              features={t.starter.features.map((f) => ({ label: f }))}
-              cta={{ onClick: openModal, label: t.cta }}
+              subtitle="Kom igång direkt"
+              price="2 499 kr"
+              originalPrice="2 999 kr"
+              periodLabel="/ mån"
+              features={[
+                { label: "AI-kundservice dygnet runt" },
+                { label: "Leadinsamling och bokningar" },
+                { label: "Tränad på ditt innehåll" },
+                { label: "Anpassad efter ditt varumärke" },
+                { label: "1 000 meddelanden per månad" },
+                { label: "Personlig dashboard" },
+                { label: "Löpande support och optimering" },
+              ]}
+              cta={{ onClick: openModal, label: "Köp nu" }}
             />
 
             <PricingCardTwo
               tone="dark"
               icon={<Layers className="w-8 h-8" />}
               name="Growth"
-              subtitle={t.growth.subtitle}
-              price={t.growth.price}
-              periodLabel={t.growth.period}
-              features={t.growth.features.map((f) => ({ label: f }))}
-              cta={{ disabled: true, label: t.comingSoon } as any}
+              subtitle="Komplett lösning"
+              price="4 999 kr"
+              periodLabel="/ mån"
+              features={[
+                { label: "Allt i Starter" },
+                { label: "5 000 meddelanden per månad" },
+                { label: "Flerspråkig AI-assistent" },
+                { label: "Automatisk uppföljning av leads" },
+                { label: "Statistik och analyser" },
+                { label: "Prioriterad support" },
+              ]}
+              cta={{ disabled: true, label: "Kommer snart" } as any}
             />
 
             <PricingCardTwo
               tone="zinc"
               icon={<Globe className="w-8 h-8" />}
               name="Pro"
-              subtitle={t.pro.subtitle}
-              price={t.pro.price}
-              periodLabel={t.pro.period}
-              features={t.pro.features.map((f) => ({ label: f }))}
-              cta={{ disabled: true, label: t.comingSoon } as any}
+              subtitle="Enterprise-lösning"
+              price="9 999 kr"
+              periodLabel="/ mån"
+              features={[
+                { label: "Allt i Growth" },
+                { label: "Obegränsade meddelanden" },
+                { label: "Anpassade integrationer" },
+                { label: "Flera botar" },
+                { label: "SLA och driftsgaranti" },
+                { label: "Dedikerad kontoansvarig" },
+              ]}
+              cta={{ disabled: true, label: "Kommer snart" } as any}
             />
           </div>
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-[13px] text-[#8e8e93] font-normal">
-            {t.footer.map((item, i) => (
-              <>
-                {i > 0 && <span key={`dot-${i}`} className="text-[#d0d0d5] hidden sm:inline">·</span>}
-                <span key={item}>{item}</span>
-              </>
-            ))}
+            <span>Länk direkt efter köp</span>
+            <span className="text-[#d0d0d5] hidden sm:inline">·</span>
+            <span>Aktiv samma dag</span>
+            <span className="text-[#d0d0d5] hidden sm:inline">·</span>
+            <span>Inga dolda kostnader</span>
           </div>
 
         </div>
@@ -104,7 +121,7 @@ export default function Services() {
           <div className="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl shadow-black/10" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-start justify-between mb-6">
               <div>
-                <p className="text-[11px] font-normal uppercase tracking-[0.2em] text-[#8e8e93] mb-1">{t.modal.tag}</p>
+                <p className="text-[11px] font-normal uppercase tracking-[0.2em] text-[#8e8e93] mb-1">Kom igång med</p>
                 <h3 className="text-xl font-semibold text-secondary-foreground">Starter</h3>
               </div>
               <button onClick={closeModal} className="text-[#8e8e93] hover:text-secondary-foreground transition-colors mt-0.5">
@@ -112,13 +129,13 @@ export default function Services() {
               </button>
             </div>
             <div className="flex flex-col gap-3">
-              <label className="text-[11px] font-normal uppercase tracking-[0.15em] text-[#6e6e73]">{t.modal.emailLabel}</label>
+              <label className="text-[11px] font-normal uppercase tracking-[0.15em] text-[#6e6e73]">Din e-post</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setError(""); }}
                 onKeyDown={(e) => e.key === "Enter" && handleCheckout()}
-                placeholder={t.modal.emailPlaceholder}
+                placeholder="namn@foretag.se"
                 autoFocus
                 className="w-full bg-secondary border border-transparent rounded-xl px-4 py-3 text-sm text-secondary-foreground placeholder-[#a0a0a8] focus:outline-none focus:border-secondary-foreground focus:ring-2 focus:ring-black/5 transition-all"
               />
@@ -128,10 +145,10 @@ export default function Services() {
                 disabled={loading}
                 className="w-full flex items-center justify-center gap-2 bg-[#E8440A] hover:bg-[#d03d09] disabled:opacity-60 text-white text-sm font-normal py-3.5 rounded-full transition-colors mt-1"
               >
-                {loading ? <><Loader className="w-4 h-4 animate-spin" /> {t.modal.loading}</> : t.modal.submit}
+                {loading ? <><Loader className="w-4 h-4 animate-spin" /> Vidarebefordrar...</> : "Gå till betalning"}
               </button>
             </div>
-            <p className="text-xs text-[#8e8e93] text-center mt-5">{t.modal.trust}</p>
+            <p className="text-xs text-[#8e8e93] text-center mt-5">Säker betalning via Stripe. Du kan avsluta när som helst.</p>
           </div>
         </div>
       )}

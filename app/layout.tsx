@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Caveat } from "next/font/google";
-import { LangProvider } from "@/contexts/LangContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -110,7 +109,7 @@ export default function RootLayout({
             }),
           }}
         />
-        <LangProvider>{children}</LangProvider>
+        {children}
       </body>
     </html>
   );
