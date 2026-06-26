@@ -220,7 +220,7 @@ export default function PricingCardTwo({
           <div className={cn('mt-6 text-center', t.accent, priceClassName)}>
             <div className={cn('mb-2 flex flex-col items-center gap-0.5', !originalPrice && 'invisible')}>
               <span className='rounded-full bg-[#E8440A] px-2 py-0.5 text-[10px] font-semibold text-white tracking-wide uppercase'>
-                Early access
+                Early access — 4 första kunderna
               </span>
               <span className={cn('text-base line-through font-medium', tone === 'dark' ? 'text-white/35' : 'text-zinc-400')}>
                 {originalPrice ? (typeof originalPrice === 'number' ? `${currency}${originalPrice}` : originalPrice) : ' '}

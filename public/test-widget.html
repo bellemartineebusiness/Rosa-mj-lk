@@ -3,25 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Testsite — Min Bot</title>
+  <title>Testsite — Färgdetektering</title>
   <style>
+    :root { --primary: #2563eb; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, sans-serif; background: #f5f5f7; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 40px; }
-    h1 { font-size: 2rem; color: #1d1d1f; }
-    p { color: #6e6e73; max-width: 400px; text-align: center; line-height: 1.6; }
-    .card { background: white; border-radius: 20px; padding: 40px; text-align: center; max-width: 480px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+    body { font-family: -apple-system, sans-serif; background: #f5f5f7; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 40px; }
+    h1 { font-size: 1.8rem; color: #1d1d1f; }
+    p { color: #6e6e73; max-width: 420px; text-align: center; line-height: 1.6; font-size: 0.95rem; }
+    .card { background: white; border-radius: 20px; padding: 40px; text-align: center; max-width: 480px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 20px; }
+    .btn { display: inline-block; background: var(--primary); color: white; border: none; border-radius: 999px; padding: 12px 28px; font-size: 0.9rem; font-family: inherit; cursor: pointer; }
+    label { font-size: 0.8rem; color: #8e8e93; display: block; margin-bottom: 6px; }
+    select { padding: 8px 12px; border-radius: 10px; border: 1px solid #e0e0e0; font-family: inherit; font-size: 0.9rem; }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>Min testsite</h1>
-    <p style="margin-top:12px">Klicka på knappen nere till höger för att testa din chattbot.</p>
+    <div>
+      <h1>Färgdetektering</h1>
+      <p style="margin-top:8px">Widgeten plockar automatiskt upp sidans primärfärg. Byt färg nedan och ladda om.</p>
+    </div>
+
+    <div>
+      <label>Välj varumärkesfärg</label>
+      <select onchange="changeColor(this.value)">
+        <option value="#2563eb">Blå</option>
+        <option value="#16a34a">Grön</option>
+        <option value="#9333ea">Lila</option>
+        <option value="#dc2626">Röd</option>
+        <option value="#0891b2">Cyan</option>
+        <option value="#E8440A">Orange (standard)</option>
+      </select>
+    </div>
+
+    <button class="btn">Kom igång →</button>
   </div>
 
-  <!--
-    BYTA UT: Ersätt YOUR_CUSTOMER_ID nedan med ditt riktiga customer ID
-    från din dashboard på localhost:3000/dashboard/[ditt-id]
-  -->
+  <script>
+    function changeColor(color) {
+      document.documentElement.style.setProperty('--primary', color);
+      // Reload so widget.js re-detects
+      window.location.href = window.location.pathname + '?color=' + encodeURIComponent(color);
+    }
+    // Restore color from URL on load
+    var params = new URLSearchParams(window.location.search);
+    var c = params.get('color');
+    if (c) document.documentElement.style.setProperty('--primary', c);
+  </script>
+
   <script src="http://localhost:3000/widget.js" data-customer-id="0fb2136e-af25-4534-ba57-db34db4dc32a"></script>
 </body>
 </html>

@@ -53,7 +53,7 @@ export default function Services() {
               icon={<MessageCircle className="w-8 h-8" />}
               name="Starter"
               subtitle="Kom igång direkt"
-              price="2 499 kr"
+              price="899 kr"
               originalPrice="2 999 kr"
               periodLabel="/ mån"
               features={[
