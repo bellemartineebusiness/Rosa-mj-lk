@@ -1,9 +1,11 @@
 import { Resend } from "resend";
 
-export async function sendWelcomeEmail(email: string, customerId: string) {
+export async function sendWelcomeEmail(email: string, customerId: string, loginToken?: string) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bellemartinee.se";
-  const dashboardUrl = `${siteUrl}/dashboard/${customerId}`;
+  const dashboardUrl = loginToken
+    ? `${siteUrl}/dashboard/${customerId}?token=${loginToken}`
+    : `${siteUrl}/dashboard/${customerId}`;
   const embedCode = `&lt;script src="${siteUrl}/widget.js" data-customer-id="${customerId}"&gt;&lt;/script&gt;`;
 
   await resend.emails.send({
@@ -21,8 +23,8 @@ export async function sendWelcomeEmail(email: string, customerId: string) {
 
         <!-- Header -->
         <tr>
-          <td style="background:#0a0a0a;padding:32px 40px;">
-            <p style="margin:0;font-size:20px;font-weight:600;color:#ffffff;letter-spacing:-0.5px;">Belle Martineé</p>
+          <td style="background:#ffffff;padding:12px 32px;text-align:center;border-bottom:1px solid #e5e5e5;">
+            <img src="${siteUrl}/Belle%20(11).png" alt="Belle Martineé" style="height:80px;width:auto;display:inline-block;" />
           </td>
         </tr>
 

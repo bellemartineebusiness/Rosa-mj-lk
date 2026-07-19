@@ -4,27 +4,48 @@ function getResend() {
   return new Resend(process.env.RESEND_API_KEY);
 }
 
-function formatIcsDate(date: Date): string {
+const VTIMEZONE = [
+  "BEGIN:VTIMEZONE",
+  "TZID:Europe/Stockholm",
+  "BEGIN:DAYLIGHT",
+  "DTSTART:19700329T020000",
+  "TZOFFSETFROM:+0100",
+  "TZOFFSETTO:+0200",
+  "TZNAME:CEST",
+  "RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3",
+  "END:DAYLIGHT",
+  "BEGIN:STANDARD",
+  "DTSTART:19701025T030000",
+  "TZOFFSETFROM:+0200",
+  "TZOFFSETTO:+0100",
+  "TZNAME:CET",
+  "RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10",
+  "END:STANDARD",
+  "END:VTIMEZONE",
+].join("\r\n");
+
+function formatIcsDate(date: Date) {
   return date.toISOString().replace(/[-:.]/g, "").slice(0, 15) + "Z";
 }
 
-function generateIcs(name: string, date: string, time: string, uid: string): string {
-  const now = new Date();
+function generateIcs(name: string, company: string, date: string, time: string, uid: string): string {
+  const summary = company ? `Bokning hos ${company}` : `Bokning`;
   let dtstart: string;
   let dtend: string;
 
-  const parsed = date && time ? new Date(`${date}T${time}:00`) : null;
-
-  if (parsed && !isNaN(parsed.getTime())) {
-    const end = new Date(parsed.getTime() + 60 * 60 * 1000);
-    dtstart = `DTSTART:${formatIcsDate(parsed)}`;
-    dtend   = `DTEND:${formatIcsDate(end)}`;
+  if (date && time) {
+    const localDt  = `${date.replace(/-/g, "")}T${time.replace(":", "")}00`;
+    const [h, m]   = time.split(":").map(Number);
+    const endH     = String(h + 1).padStart(2, "0");
+    const localEnd = `${date.replace(/-/g, "")}T${endH}${String(m).padStart(2, "0")}00`;
+    dtstart = `DTSTART;TZID=Europe/Stockholm:${localDt}`;
+    dtend   = `DTEND;TZID=Europe/Stockholm:${localEnd}`;
   } else if (date) {
     const d = date.replace(/-/g, "");
     dtstart = `DTSTART;VALUE=DATE:${d}`;
     dtend   = `DTEND;VALUE=DATE:${d}`;
   } else {
-    const d = now.toISOString().split("T")[0].replace(/-/g, "");
+    const d = new Date().toISOString().split("T")[0].replace(/-/g, "");
     dtstart = `DTSTART;VALUE=DATE:${d}`;
     dtend   = `DTEND;VALUE=DATE:${d}`;
   }
@@ -32,17 +53,42 @@ function generateIcs(name: string, date: string, time: string, uid: string): str
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
+    "CALSCALE:GREGORIAN",
     "PRODID:-//Belle Martineé//Chattbot//EN",
+    VTIMEZONE,
     "BEGIN:VEVENT",
     `UID:booking-${uid}@bellemartinee.se`,
-    `DTSTAMP:${formatIcsDate(now)}`,
+    `DTSTAMP:${formatIcsDate(new Date())}`,
     dtstart,
     dtend,
-    `SUMMARY:Bokning – ${name}`,
-    "DESCRIPTION:Bokad via chattbot",
+    `SUMMARY:${summary}`,
+    `DESCRIPTION:Bokad av ${name} via chattbot`,
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");
+}
+
+function buildCalendarUrls(name: string, company: string, date: string, time: string, uid: string, baseUrl: string) {
+  const title   = encodeURIComponent(`Bokning hos ${company || name}`);
+  const details = encodeURIComponent(`Bokad av ${name} via chattbot`);
+  const apple   = `${baseUrl}/api/ics?name=${encodeURIComponent(name)}&company=${encodeURIComponent(company)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}&uid=${uid}`.replace(/^https?:\/\//, "webcal://");
+
+  let gcal    = "https://calendar.google.com/calendar/render?action=TEMPLATE";
+  let outlook = "https://outlook.live.com/calendar/0/deeplink/compose";
+
+  if (date && time) {
+    const start = new Date(`${date}T${time}:00`);
+    const end   = new Date(start.getTime() + 60 * 60 * 1000);
+    const fmt   = (d: Date) => d.toISOString().replace(/[-:.]/g, "").slice(0, 15) + "Z";
+    gcal    = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${fmt(start)}/${fmt(end)}&details=${details}`;
+    outlook = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${title}&startdt=${start.toISOString()}&enddt=${end.toISOString()}&body=${details}`;
+  } else if (date) {
+    const d = date.replace(/-/g, "");
+    gcal    = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${d}/${d}&details=${details}`;
+    outlook = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${title}&startdt=${date}&enddt=${date}&body=${details}`;
+  }
+
+  return { gcal, outlook, apple };
 }
 
 export async function sendBookingNotification({
@@ -52,6 +98,7 @@ export async function sendBookingNotification({
   date,
   time,
   bookingId,
+  baseUrl = "https://bellemartinee.se",
 }: {
   to: string;
   companyName: string;
@@ -59,10 +106,12 @@ export async function sendBookingNotification({
   date: string;
   time: string;
   bookingId: string;
+  baseUrl?: string;
 }) {
-  const ics     = generateIcs(name, date, time, bookingId);
-  const icsB64  = Buffer.from(ics).toString("base64");
+  const ics      = generateIcs(name, companyName, date, time, bookingId);
+  const icsB64   = Buffer.from(ics).toString("base64");
   const safeName = name.toLowerCase().replace(/\s+/g, "-");
+  const { gcal, outlook, apple } = buildCalendarUrls(name, companyName, date, time, bookingId, baseUrl);
 
   await getResend().emails.send({
     from: "Belle Martineé <info@bellemartinee.se>",
@@ -77,8 +126,8 @@ export async function sendBookingNotification({
     <tr><td align="center">
       <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:20px;overflow:hidden;border:1px solid #e5e5e5;">
         <tr>
-          <td style="background:#0a0a0a;padding:24px 32px;">
-            <p style="margin:0;font-size:16px;font-weight:600;color:#ffffff;">${companyName}</p>
+          <td style="background:#ffffff;padding:12px 32px;text-align:center;border-bottom:1px solid #e5e5e5;">
+            <img src="${baseUrl}/Belle%20(11).png" alt="Belle Martineé" style="height:80px;width:auto;display:inline-block;" />
           </td>
         </tr>
         <tr>
@@ -91,9 +140,18 @@ export async function sendBookingNotification({
               ${time ? `<tr><td style="padding:5px 0;"><span style="font-size:12px;color:#8e8e93;display:inline-block;width:60px;">Tid</span><span style="font-size:13px;font-weight:500;color:#1d1d1f;">${time}</span></td></tr>` : ""}
             </table>
 
-            <p style="margin:0;font-size:13px;color:#6e6e73;line-height:1.6;">
-              Öppna den bifogade <strong>.ics-filen</strong> för att lägga till bokningen direkt i Google Calendar, Outlook eller Apple Calendar.
-            </p>
+            <p style="margin:0 0 14px;font-size:13px;color:#6e6e73;">Lägg till i din kalender:</p>
+            <table cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="padding-right:8px;">
+                  <a href="${gcal}" target="_blank" style="display:inline-block;background:#E8440A;color:#ffffff;font-size:12px;font-weight:600;padding:10px 18px;border-radius:50px;text-decoration:none;">Google Calendar</a>
+                </td>
+                <td style="padding-right:8px;">
+                  <a href="${outlook}" target="_blank" style="display:inline-block;background:#0078d4;color:#ffffff;font-size:12px;font-weight:600;padding:10px 18px;border-radius:50px;text-decoration:none;">Outlook</a>
+                </td>
+              </tr>
+            </table>
+            <p style="margin:10px 0 0;font-size:12px;color:#8e8e93;">📅 Apple Calendar: kalenderinbjudan finns bifogad i mailet.</p>
           </td>
         </tr>
         <tr>

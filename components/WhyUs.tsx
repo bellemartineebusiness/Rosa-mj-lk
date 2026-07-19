@@ -21,7 +21,7 @@ const comparison = [
 const whyUs = [
   {
     title: "Aktiv samma dag",
-    body: "Direkt efter köpet får du din länk. Klistra in en kodrad på din hemsida så är botten igång.",
+    body: "Direkt efter köpet fyller du i ditt företag i dashboarden. Vi lägger in boten på din hemsida — du behöver inte röra ett finger.",
   },
   {
     title: "Personlig setup",
@@ -90,7 +90,7 @@ export default function WhyUs() {
               </div>
               <div className="flex items-center justify-between border-b border-[#d8d8d8] pb-3">
                 <span className="text-[#6e6e73] text-sm">Månadsabonnemang</span>
-                <span className="text-secondary-foreground text-sm font-medium">2 999 kr</span>
+                <span className="text-secondary-foreground text-sm font-medium">1 599 kr</span>
               </div>
               <div className="flex items-center justify-between border-b border-[#d8d8d8] pb-3">
                 <span className="text-[#6e6e73] text-sm">Setup & lansering</span>
@@ -110,11 +110,11 @@ export default function WhyUs() {
               </div>
               <div className="mt-2 pt-4 border-t border-[#f0f0f0] flex items-center justify-between">
                 <span className="text-secondary-foreground text-sm font-medium">Totalt per månad</span>
-                <span className="text-[#E8440A] text-xl font-semibold">2 999 kr</span>
+                <span className="text-[#E8440A] text-xl font-semibold">1 599 kr</span>
               </div>
               <div className="bg-[#E8440A]/8 rounded-2xl px-4 py-3">
-                <p className="text-[#E8440A] text-sm font-medium">Du sparar ~37 000 kr per månad</p>
-                <p className="text-[#6e6e73] text-xs mt-0.5">Det är 444 000 kr om året.</p>
+                <p className="text-[#E8440A] text-sm font-medium">Du sparar ~38 000 kr per månad</p>
+                <p className="text-[#6e6e73] text-xs mt-0.5">Det är ~460 000 kr om året.</p>
               </div>
             </div>
           </div>

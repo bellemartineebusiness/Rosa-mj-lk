@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
   const db = createServiceClient();
   const { data: customer } = await db
     .from("customers")
-    .select("id, subscription_status")
+    .select("id, subscription_status, login_token")
     .eq("email", email)
     .single();
 
@@ -25,12 +25,12 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  if (customer.subscription_status !== "active") {
+  if (customer.subscription_status !== "active" && customer.subscription_status !== "trialing") {
     return NextResponse.json({ error: "Ingen aktiv prenumeration hittades för denna e-post." }, { status: 403 });
   }
 
   try {
-    await sendWelcomeEmail(email, customer.id);
+    await sendWelcomeEmail(email, customer.id, customer.login_token ?? undefined);
     logger.info("resend_link_sent", { customerId: customer.id, email });
   } catch (err) {
     logger.error("resend_link_failed", { error: String(err), email });

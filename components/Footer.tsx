@@ -46,8 +46,8 @@ export default function Footer() {
               label: "Tjänster",
               items: [
                 { name: "Starter Bot",            href: "/#tjanster" },
-                { name: "Growth — Kommer snart",  href: "/#tjanster" },
-                { name: "Pro — Kommer snart",     href: "/#tjanster" },
+                { name: "Growth (Kommer snart)",  href: "/#tjanster" },
+                { name: "Pro (Kommer snart)",     href: "/#tjanster" },
               ],
             },
             {

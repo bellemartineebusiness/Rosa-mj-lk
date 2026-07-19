@@ -22,25 +22,31 @@ export default async function SuccessPage({
       // Försök hitta befintlig kund
       const { data: existing } = await db
         .from("customers")
-        .select("id")
+        .select("id, login_token")
         .eq("email", email)
         .single();
 
       if (existing) {
         customerId = existing.id;
-        await sendWelcomeEmail(email, existing.id).catch(console.error);
+        await sendWelcomeEmail(email, existing.id, existing.login_token ?? undefined).catch(console.error);
+        if (existing.login_token) {
+          redirect(`/dashboard/${existing.id}?token=${existing.login_token}`);
+        }
       } else {
         // Webhook hann inte — skapa kunden direkt
         const { data: created } = await db
           .from("customers")
           .insert({ email, stripe_customer_id: stripeCustomerId, subscription_status: "active" })
-          .select("id")
+          .select("id, login_token")
           .single();
 
         if (created) {
           await db.from("bot_settings").insert({ customer_id: created.id });
           customerId = created.id;
-          await sendWelcomeEmail(email, created.id).catch(console.error);
+          await sendWelcomeEmail(email, created.id, created.login_token ?? undefined).catch(console.error);
+          if (created.login_token) {
+            redirect(`/dashboard/${created.id}?token=${created.login_token}`);
+          }
         }
       }
     }

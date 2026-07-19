@@ -1,54 +1,32 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit } from "@/lib/rateLimit";
+import { buildSystemPrompt } from "@/lib/buildSystemPrompt";
+import { createServiceClient } from "@/lib/supabase";
+import { getSlotsForDate, formatDate } from "@/lib/availability";
 
-const claude = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const DEMO_CUSTOMER_ID = "0fb2136e-af25-4534-ba57-db34db4dc32a";
 
-const DEMO_SYSTEM_PROMPT = `Du är en AI-chattbot som demonstrerar vad Belle Martineés chatbottar kan göra för ett företag.
+const COMPLEX_SIGNALS = [
+  "boka", "bokning", "boka tid", "boka in", "ny tid", "lediga tider",
+  "avboka", "avbokning", "omboka", "ombokning", "ändra tid", "flytta",
+  "avbryta", "annullera",
+  "passar", "tveksam", "osäker", "vet inte", "jämför", "varför ska",
+  "är det värt", "värt det", "fungerar det för", "mitt företag", "min bransch",
+  "passa mig", "passa oss", "behöver jag", "skillnad", "istället för",
+  "bättre än", "jämfört med", "övertygad", "rätt val", "tvekar",
+  "hjälp mig förstå", "hur fungerar", "vad menas", "kan ni",
+];
 
-Du spelar rollen som kundtjänstbot för ett fiktivt spa och skönhetssalong som heter "Salon Aurora" i Stockholm.
-
-Information om Salon Aurora:
-- Öppettider: Måndag–fredag 09:00–19:00, Lördag 10:00–17:00, Stängt söndag
-- Tjänster: Klippning (495 kr), Färgning (från 895 kr), Ansiktsbehandling (695 kr), Massage (795 kr/60 min), Manikyr (395 kr)
-- Adress: Östermalmsgatam 12, Stockholm
-- Telefon: 08-123 45 67
-- VD: Isabella Bergström
-- Betalning: Kortbetalning, Swish och kontant
-- E-post (allmänt): info@salonaurora.se
-- E-post (bokningar): bokning@salonaurora.se
-- E-post (support/klagomål): support@salonaurora.se
-
-BOKNING:
-När någon vill boka en tid ska du samla in information steg för steg. Fråga om en sak i taget:
-1. Vilken tjänst de vill boka
-2. Vilket datum och tid som passar (påminn om öppettiderna om det behövs)
-3. Deras namn
-4. Deras telefonnummer
-
-Säg ALDRIG att du inte kan se lediga tider, att du saknar tillgång till bokningssystemet eller att du behöver hänvisa till personal för tider. Be kunden välja ett datum och tid som passar dem inom öppettiderna — det är allt.
-
-När du har all information bekräftar du bokningen med ett tydligt sammanfattande meddelande, till exempel:
-"Perfekt! Din bokning är bekräftad. Klippning den 18 juni kl 14:00 för Anna Svensson. Vi ses på Östermalmsgatam 12. Vid frågor, ring 08-123 45 67."
-
-AVBOKNING:
-Kolla alltid i konversationshistoriken om användaren redan har en aktiv bokning. Om du hittar en bekräftad bokning behöver du inte fråga igen — referera direkt till den och fråga om de vill avboka den. Bekräfta sedan avbokningen, till exempel:
-"Din bokning (Massage den 18 juni kl 14:00) är nu avbokad. Hoppas vi ses en annan gång, Anna."
-
-ÄNDRA BOKNING:
-Kolla i konversationshistoriken efter en aktiv bokning. Om du hittar en, visa den och fråga vilket nytt datum och tid de vill ha istället. Bekräfta ändringen, till exempel:
-"Klart! Din bokning är ändrad från den 18 juni till den 20 juni kl 11:00. Vi ser fram emot att se dig, Anna."
-
-VIKTIGT: Du håller alltid koll på användarens senaste aktiva bokning under hela konversationen. Om de bokar, avbokar eller ändrar — uppdatera din bild av vad som gäller.
-
-Svara alltid på svenska. Var vänlig, professionell och hjälpsam. Håll svaren kortfattade (max 3–4 meningar).
-Använd ALDRIG markdown-formatering som stjärnor, fetstil, kursiv, rubriker eller punktlistor. Använd INGA emojis. Skriv enbart vanlig löptext.
-Om någon frågar vem som gjort dig eller om teknik bakom, berätta att du är byggd av Belle Martineé.
-Nämn ALDRIG e-post, e-postbekräftelser eller att du inte kan skicka mail. Bokningsbekräftelsen sker direkt i chatten — det räcker.
-Hänvisa ALDRIG till telefon eller besök om användaren inte specifikt frågat om det.`;
+function selectModel(messages: { role: string; content: string }[]): string {
+  const last = [...messages].reverse().find((m) => m.role === "user")?.content?.toLowerCase() ?? "";
+  return COMPLEX_SIGNALS.some((s) => last.includes(s))
+    ? "claude-sonnet-4-6"
+    : "claude-haiku-4-5-20251001";
+}
 
 const MAX_MESSAGE_LENGTH = 500;
-const MAX_HISTORY = 40;
+const MAX_HISTORY = 10;
 
 function getIp(req: NextRequest) {
   return (
@@ -76,22 +54,74 @@ export async function POST(req: NextRequest) {
       content: String(m.content ?? "").slice(0, MAX_MESSAGE_LENGTH),
     }));
 
+  let systemPrompt: string;
   try {
-    const response = await claude.messages.create({
-      model: "claude-sonnet-4-6",
-      max_tokens: 256,
-      system: DEMO_SYSTEM_PROMPT,
-      messages,
-    });
+    systemPrompt = await buildSystemPrompt(DEMO_CUSTOMER_ID);
+  } catch {
+    systemPrompt = "Du är en hjälpsam kundtjänstassistent. Svara på svenska.";
+  }
 
-    const reply = response.content
+  // Injicera lediga tider om ett datum nämns
+  try {
+    const db = createServiceClient();
+    const { data: settings } = await db
+      .from("bot_settings")
+      .select("opening_hours, closed_dates")
+      .eq("customer_id", DEMO_CUSTOMER_ID)
+      .single();
+
+    if (settings?.opening_hours) {
+      const allText = messages.map((m) => m.content).join(" ");
+      const dateMatch = allText.match(/\d{4}-\d{2}-\d{2}/);
+      if (dateMatch) {
+        const dateStr = dateMatch[0];
+        const allSlots = getSlotsForDate(settings.opening_hours, dateStr, settings.closed_dates ?? undefined);
+        if (allSlots.length > 0) {
+          const { data: bookedLeads } = await db
+            .from("leads")
+            .select("time")
+            .eq("customer_id", DEMO_CUSTOMER_ID)
+            .eq("date", dateStr)
+            .eq("status", "active");
+          const bookedTimes = new Set((bookedLeads ?? []).map((l) => l.time));
+          const freeSlots = allSlots.filter((s) => !bookedTimes.has(s));
+          const label = formatDate(dateStr);
+          systemPrompt += freeSlots.length > 0
+            ? `\n\nLEDIGA TIDER ${label.toUpperCase()}: ${freeSlots.join(", ")}. Använd BARA dessa tider när du föreslår eller bekräftar bokningar den dagen.`
+            : allSlots.length > 0
+              ? `\n\nINGA LEDIGA TIDER ${label.toUpperCase()}: Alla tider är fullbokade. Föreslå ett annat datum.`
+              : `\n\nSTÄNGT ${label.toUpperCase()}: Vi är stängda den dagen. Informera kunden och föreslå ett annat datum.`;
+        }
+      }
+    }
+  } catch { /* ignorera om tillgänglighetsinjektion misslyckas */ }
+
+  try {
+    const model = selectModel(messages);
+    const response = await new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }).messages.create({
+      model,
+      max_tokens: 512,
+      system: systemPrompt,
+      messages,
+    }, { timeout: 25000 });
+
+    const raw = response.content
       .filter((b): b is Anthropic.TextBlock => b.type === "text")
       .map((b) => b.text)
       .join("");
 
+    let reply = raw;
+    try {
+      const jsonMatch = raw.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        reply = parsed.message ?? raw;
+      }
+    } catch { /* använd råtext om JSON-parsning misslyckas */ }
+
     return NextResponse.json({ reply });
   } catch (err) {
-    console.error("Demo chat Claude error:", err);
+    console.error("Demo chat error:", err);
     return NextResponse.json({ error: "Kunde inte nå AI:n. Försök igen." }, { status: 500 });
   }
 }

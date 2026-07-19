@@ -5,10 +5,10 @@ import { Send } from "lucide-react";
 
 type Message = { role: "user" | "assistant"; content: string };
 
-const MAX_SESSION_MESSAGES = 20;
+const MAX_SESSION_MESSAGES = 40;
 
 const initial: Message[] = [
-  { role: "assistant", content: "Hej! Jag är en AI-chattbot. Skriv något så svarar jag direkt 👋" },
+  { role: "assistant", content: "Hej! Välkommen till Salon Aurora. Hur kan jag hjälpa dig idag?" },
 ];
 
 export default function ChatDemo({ botId = "support" }: { botId?: string }) {
@@ -98,11 +98,15 @@ export default function ChatDemo({ botId = "support" }: { botId?: string }) {
       {/* Input */}
       <div className="px-4 py-3 border-t border-white/8">
         {sessionEnded ? (
-          <p className="text-center text-white/40 text-xs py-1">
-            Demogränsen nådd.{" "}
-            <a href="/#kontakt" className="text-[#E8440A] hover:underline">Kontakta oss</a>{" "}
-            för en riktig bot.
-          </p>
+          <div className="flex flex-col items-center gap-2 py-1">
+            <p className="text-center text-white/40 text-xs">Sessionen är avslutad.</p>
+            <button
+              onClick={() => { setMessages(initial); setInput(""); }}
+              className="text-xs font-medium px-3 py-1.5 rounded-lg bg-[#E8440A] text-white transition-opacity hover:opacity-80"
+            >
+              Starta ny chatt
+            </button>
+          </div>
         ) : (
           <div className="flex gap-2">
             <input

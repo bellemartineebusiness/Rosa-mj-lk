@@ -218,13 +218,15 @@ export default function PricingCardTwo({
           )}
 
           <div className={cn('mt-6 text-center', t.accent, priceClassName)}>
-            <div className={cn('mb-2 flex flex-col items-center gap-0.5', !originalPrice && 'invisible')}>
+            <div className={'mb-3 flex flex-col items-center gap-1'}>
               <span className='rounded-full bg-[#E8440A] px-2 py-0.5 text-[10px] font-semibold text-white tracking-wide uppercase'>
-                Early access — 4 första kunderna
+                1 månads provperiod
               </span>
-              <span className={cn('text-base line-through font-medium', tone === 'dark' ? 'text-white/35' : 'text-zinc-400')}>
-                {originalPrice ? (typeof originalPrice === 'number' ? `${currency}${originalPrice}` : originalPrice) : ' '}
-              </span>
+              {originalPrice && (
+                <span className={cn('text-base line-through font-medium', tone === 'dark' ? 'text-white/35' : 'text-zinc-400')}>
+                  {typeof originalPrice === 'number' ? `${currency}${originalPrice}` : originalPrice}
+                </span>
+              )}
             </div>
             <div className='text-5xl font-bold leading-none tracking-tight'>{pp.main}</div>
             {periodLabel && (
@@ -238,7 +240,7 @@ export default function PricingCardTwo({
             )}
           </div>
 
-          <ul className={cn('mt-6 space-y-2.5 flex-1', featureListClassName)}>
+          <ul className={cn('mt-6 space-y-1.5 flex-1', featureListClassName)}>
             {features.map((f, i) => {
               const ok = f.included !== false;
               return (

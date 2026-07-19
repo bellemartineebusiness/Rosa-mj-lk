@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { createServiceClient } from "@/lib/supabase";
+import { sendWelcomeEmail } from "@/lib/sendWelcomeEmail";
 import { logger } from "@/lib/logger";
 import Stripe from "stripe";
 
@@ -43,16 +44,23 @@ export async function POST(req: NextRequest) {
           .update({ stripe_customer_id: stripeCustomerId, subscription_status: "active" })
           .eq("id", existing.id);
         logger.info("bot_created", { event: "reactivated", customerId: existing.id, email });
+        const { data: reactivated } = await db.from("customers").select("login_token").eq("id", existing.id).single();
+        sendWelcomeEmail(email, existing.id, reactivated?.login_token ?? undefined).catch((e) =>
+          logger.error("welcome_email_failed", { error: String(e) })
+        );
       } else {
         const { data: created } = await db
           .from("customers")
           .insert({ email, stripe_customer_id: stripeCustomerId, subscription_status: "active" })
-          .select("id")
+          .select("id, login_token")
           .single();
 
         if (created) {
           await db.from("bot_settings").insert({ customer_id: created.id });
           logger.info("bot_created", { event: "new", customerId: created.id, email });
+          sendWelcomeEmail(email, created.id, created.login_token ?? undefined).catch((e) =>
+            logger.error("welcome_email_failed", { error: String(e) })
+          );
         }
       }
       break;

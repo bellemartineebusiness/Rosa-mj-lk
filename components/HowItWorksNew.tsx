@@ -10,8 +10,8 @@ const steps = [
   {
     Icon: Code,
     step: "2",
-    title: "Klistra in en kodrad",
-    body: "Du får en personlig kodsnutt direkt. Klistra in den i header eller footer på din hemsida — fungerar med WordPress, Shopify, Webflow och alla andra plattformar.",
+    title: "Vi installerar åt dig",
+    body: "Du fyller i ditt företag i dashboarden. Vi lägger in boten på din hemsida — fungerar med WordPress, Shopify, Webflow och alla andra plattformar.",
   },
   {
     Icon: MessageCircle,

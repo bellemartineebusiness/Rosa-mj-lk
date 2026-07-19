@@ -2,6 +2,7 @@
 
 import { Send, Mail, MapPin, CheckCircle } from "lucide-react";
 import { useForm, ValidationError } from "@formspree/react";
+import FadeUp from "@/components/FadeUp";
 
 const services = [
   "Starter Bot", "Annat",
@@ -25,9 +26,7 @@ export default function ContactForm() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
 
-          <div
-            className="bg-[#0a0a0a] rounded-3xl p-6 md:p-10 flex flex-col h-full"
-          >
+          <FadeUp className="h-full"><div className="bg-[#0a0a0a] rounded-3xl p-6 md:p-10 flex flex-col h-full">
             <p className="text-[11px] font-normal uppercase tracking-[0.2em] text-white/50 mb-6">Kontakt</p>
             <h2 className="text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight leading-tight">
               Hör av dig.
@@ -72,9 +71,9 @@ export default function ContactForm() {
                 <span className="text-[#E8440A] text-lg group-hover:translate-x-1 transition-transform duration-200">→</span>
               </a>
             </div>
-          </div>
+          </div></FadeUp>
 
-          <div>
+          <FadeUp delay={0.15} className="h-full"><div className="h-full">
             <div className="rounded-3xl p-6 md:p-10 bg-white border border-[#c8c8ce] h-full flex flex-col">
               {state.succeeded ? (
                 <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
@@ -148,7 +147,7 @@ export default function ContactForm() {
                 </>
               )}
             </div>
-          </div>
+          </div></FadeUp>
 
         </div>
       </div>

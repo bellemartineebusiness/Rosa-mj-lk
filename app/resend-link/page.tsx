@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function ResendLinkPage() {
+  const searchParams = useSearchParams();
+  const invalidLink  = searchParams.get("reason") === "invalid";
   const [email, setEmail]   = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "ok" | "error">("idle");
   const [msg, setMsg]       = useState("");
@@ -34,6 +37,11 @@ export default function ResendLinkPage() {
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-6">
       <div className="max-w-md w-full flex flex-col gap-6">
         <div className="text-center flex flex-col items-center gap-3">
+          {invalidLink && (
+            <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl px-4 py-3 w-full">
+              <p className="text-yellow-300 text-sm">Din länk är ogiltig eller har gått ut. Begär en ny nedan.</p>
+            </div>
+          )}
           <h1 className="text-2xl font-semibold text-white tracking-tight">Skicka länken igen</h1>
           <p className="text-white/50 text-sm leading-relaxed">
             Ange din e-postadress så skickar vi din personliga dashboard-länk på nytt.

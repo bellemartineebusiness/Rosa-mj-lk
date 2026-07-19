@@ -3,17 +3,22 @@ import { createServiceClient } from "@/lib/supabase";
 
 export async function GET(req: NextRequest) {
   const customerId = req.nextUrl.searchParams.get("customerId");
+  const token      = req.nextUrl.searchParams.get("token");
   if (!customerId) return NextResponse.json({ error: "customerId saknas." }, { status: 400 });
 
   const db = createServiceClient();
 
   const { data: customer } = await db
     .from("customers")
-    .select("id, email, subscription_status, messages_used_this_month")
+    .select("id, email, subscription_status, messages_used_this_month, login_token")
     .eq("id", customerId)
     .single();
 
   if (!customer) return NextResponse.json({ error: "Kunden hittades inte." }, { status: 404 });
+
+  if (customer.login_token && token !== customer.login_token) {
+    return NextResponse.json({ error: "Ogiltig länk. Begär en ny via din e-post." }, { status: 401 });
+  }
 
   const { data: settings } = await db
     .from("bot_settings")
@@ -29,7 +34,7 @@ export async function GET(req: NextRequest) {
 
   const { data: leads } = await db
     .from("leads")
-    .select("id, action, name, email, phone, date, time, status, created_at")
+    .select("id, action, name, email, phone, notes, date, time, status, created_at")
     .eq("customer_id", customerId)
     .order("created_at", { ascending: false })
     .limit(50);
@@ -43,16 +48,32 @@ export async function POST(req: NextRequest) {
 
   const db = createServiceClient();
 
-  // Verifiera att kunden faktiskt existerar
   const { data: customer } = await db
     .from("customers")
-    .select("id")
+    .select("id, login_token")
     .eq("id", body.customerId)
     .single();
 
   if (!customer) return NextResponse.json({ error: "Kunden hittades inte." }, { status: 404 });
 
-  const { customerId, knowledge_base: kb, ...settingsFields } = body;
+  if (customer.login_token && body.token !== customer.login_token) {
+    return NextResponse.json({ error: "Ogiltig länk. Begär en ny via din e-post." }, { status: 401 });
+  }
+
+  const { customerId, knowledge_base: kb } = body;
+
+  const allowedFields = [
+    "company_name", "company_description", "owner_name", "opening_hours", "prices",
+    "phone", "address", "contact_email", "sales_email", "support_email",
+    "payment_info", "delivery_info", "guarantee_info",
+    "system_prompt", "tone", "notification_email", "slack_webhook", "brand_color",
+    "closed_dates", "cancellation_policy",
+  ];
+  const settingsFields = Object.fromEntries(
+    allowedFields
+      .filter((k) => body[k] !== undefined)
+      .map((k) => [k, body[k]])
+  );
 
   // Upsert bot_settings
   await db.from("bot_settings").upsert(

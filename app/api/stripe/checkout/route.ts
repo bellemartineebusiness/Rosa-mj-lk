@@ -41,6 +41,7 @@ export async function POST(req: NextRequest) {
       payment_method_types: ["card"],
       customer_email: email,
       line_items: [{ price: resolvedPriceId, quantity: 1 }],
+      subscription_data: { trial_period_days: 30 },
       success_url: `${base}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${base}/#tjanster`,
       metadata: { email },

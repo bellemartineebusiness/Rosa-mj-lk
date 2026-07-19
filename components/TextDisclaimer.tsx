@@ -1,19 +1,20 @@
 "use client";
 
 import { Typewriter } from "@/components/ui/typewriter";
+import FadeUp from "@/components/FadeUp";
 
 export default function TextDisclaimer() {
   return (
     <section className="py-16 bg-white">
       <div className="max-w-5xl mx-auto px-6 md:px-8">
-        <div className="rounded-3xl overflow-hidden bg-[#e0e0e0]">
+        <FadeUp><div className="rounded-3xl overflow-hidden bg-[#e0e0e0]">
           <div className="px-6 py-10 md:px-12 md:py-16 flex flex-col items-center text-center">
             <p className="text-[11px] font-normal uppercase tracking-[0.2em] text-secondary-foreground/40 mb-8">Vårt motto</p>
 
             <div className="mb-6">
               <span className="text-4xl md:text-5xl font-semibold text-secondary-foreground tracking-tight">
                 <Typewriter
-                  text={["Chattbot.", "Support.", "Kundtjänst.", "Automatisering."]}
+                  text={["Bokningar.", "Prislista.", "Öppettider.", "Kundservice."]}
                   speed={60}
                   deleteSpeed={35}
                   waitTime={1800}
@@ -35,7 +36,7 @@ export default function TextDisclaimer() {
               Kom igång
             </a>
           </div>
-        </div>
+        </div></FadeUp>
       </div>
     </section>
   );

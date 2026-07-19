@@ -4,6 +4,7 @@ import { useState } from "react";
 import { X, Loader } from "lucide-react";
 import PricingCardTwo from "@/components/ui/pricing-card-triple";
 import { Globe, Layers, MessageCircle } from "lucide-react";
+import FadeUp from "@/components/FadeUp";
 
 export default function Services() {
   const [modal, setModal] = useState(false);
@@ -40,32 +41,37 @@ export default function Services() {
       <section id="tjanster" className="py-20 md:py-36 bg-white">
         <div className="max-w-5xl mx-auto px-6 md:px-8">
 
-          <div className="mb-10 md:mb-16 text-center">
+          <FadeUp><div className="mb-10 md:mb-16 text-center">
             <p className="text-[11px] font-normal uppercase tracking-[0.25em] text-[#8e8e93] mb-5">Priser</p>
-            <h2 className="text-4xl md:text-[3.25rem] font-semibold text-secondary-foreground tracking-tight leading-tight">
+            <h2 className="text-4xl md:text-[3.25rem] font-semibold text-secondary-foreground tracking-tight leading-tight mb-6">
               Enkelt. Transparent. Klart.
             </h2>
-          </div>
+            <div className="inline-flex flex-col items-center gap-2 bg-[#fff8f5] border border-[#E8440A]/20 rounded-2xl px-8 py-5 max-w-lg mx-auto">
+              <p className="text-base font-semibold text-secondary-foreground tracking-tight">Prova AI-chatboten gratis i 30 dagar.</p>
+              <p className="text-sm text-[#6e6e73] font-normal leading-relaxed text-center">
+                Efter 30 dagar dras 1 599 kr/mån automatiskt. Avsluta när som helst innan dess och du betalar ingenting.
+              </p>
+            </div>
+          </div></FadeUp>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <FadeUp delay={0.1}><div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <PricingCardTwo
               tone="red"
               icon={<MessageCircle className="w-8 h-8" />}
               name="Starter"
               subtitle="Kom igång direkt"
-              price="899 kr"
-              originalPrice="2 999 kr"
+              price="1 599 kr"
               periodLabel="/ mån"
               features={[
-                { label: "AI-kundservice dygnet runt" },
-                { label: "Leadinsamling och bokningar" },
+                { label: "Gratis installation & onboarding" },
+                { label: "AI-kundservice 24/7" },
+                { label: "Leadinsamling & bokningar" },
                 { label: "Tränad på ditt innehåll" },
-                { label: "Anpassad efter ditt varumärke" },
-                { label: "1 000 meddelanden per månad" },
+                { label: "1 000 meddelanden/mån" },
                 { label: "Personlig dashboard" },
-                { label: "Löpande support och optimering" },
+                { label: "Support & optimering" },
               ]}
-              cta={{ onClick: openModal, label: "Köp nu" }}
+              cta={{ onClick: openModal, label: "Starta gratis" }}
             />
 
             <PricingCardTwo
@@ -73,14 +79,15 @@ export default function Services() {
               icon={<Layers className="w-8 h-8" />}
               name="Growth"
               subtitle="Komplett lösning"
-              price="4 999 kr"
+              price="2 999 kr"
               periodLabel="/ mån"
               features={[
                 { label: "Allt i Starter" },
-                { label: "5 000 meddelanden per månad" },
-                { label: "Flerspråkig AI-assistent" },
-                { label: "Automatisk uppföljning av leads" },
-                { label: "Statistik och analyser" },
+                { label: "15 000 meddelanden/mån" },
+                { label: "AI kvalificerar & följer upp leads" },
+                { label: "CRM & Google Sheets" },
+                { label: "Automatisk kalenderbokning" },
+                { label: "Avancerad statistik" },
                 { label: "Prioriterad support" },
               ]}
               cta={{ disabled: true, label: "Kommer snart" } as any}
@@ -91,27 +98,26 @@ export default function Services() {
               icon={<Globe className="w-8 h-8" />}
               name="Pro"
               subtitle="Enterprise-lösning"
-              price="9 999 kr"
+              price="4 999 kr"
               periodLabel="/ mån"
               features={[
                 { label: "Allt i Growth" },
-                { label: "Obegränsade meddelanden" },
+                { label: "Hög användning (Fair Use)" },
                 { label: "Anpassade integrationer" },
-                { label: "Flera botar" },
-                { label: "SLA och driftsgaranti" },
-                { label: "Dedikerad kontoansvarig" },
+                { label: "Flera AI-assistenter" },
+                { label: "SLA & driftsgaranti" },
+                { label: "Ta bort Belle Martineé loggan" },
+                { label: "Dedikerad support" },
               ]}
               cta={{ disabled: true, label: "Kommer snart" } as any}
             />
-          </div>
+          </div></FadeUp>
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-[13px] text-[#8e8e93] font-normal">
-            <span>Länk direkt efter köp</span>
-            <span className="text-[#d0d0d5] hidden sm:inline">·</span>
-            <span>Aktiv samma dag</span>
+          <FadeUp delay={0.2}><div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-[13px] text-[#8e8e93] font-normal">
+            <span>30 dagar gratis</span>
             <span className="text-[#d0d0d5] hidden sm:inline">·</span>
             <span>Inga dolda kostnader</span>
-          </div>
+          </div></FadeUp>
 
         </div>
       </section>

@@ -56,8 +56,8 @@ export default function Navbar() {
         </nav>
 
         <a
-          href="#kontakt"
-          onClick={(e) => handleClick(e, "#kontakt")}
+          href="#tjanster"
+          onClick={(e) => handleClick(e, "#tjanster")}
           className="hidden md:inline-flex text-[13px] font-normal px-5 py-2 rounded-full transition-all duration-200 bg-[#E8440A] text-white hover:bg-[#d03d09]"
         >
           Kom igång
@@ -85,8 +85,8 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="#kontakt"
-              onClick={(e) => handleClick(e, "#kontakt")}
+              href="#tjanster"
+              onClick={(e) => handleClick(e, "#tjanster")}
               className="mt-4 text-center text-sm font-normal px-5 py-3 rounded-full bg-[#E8440A] text-white"
             >
               Kom igång

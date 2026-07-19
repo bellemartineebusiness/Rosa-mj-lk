@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS customers (
 -- Migration: lägg till nya kolumner utan att förstöra befintlig data
 ALTER TABLE customers ADD COLUMN IF NOT EXISTS messages_used_this_month integer NOT NULL DEFAULT 0;
 ALTER TABLE customers ADD COLUMN IF NOT EXISTS last_reset_month text NOT NULL DEFAULT to_char(now(), 'YYYY-MM');
+ALTER TABLE customers ADD COLUMN IF NOT EXISTS login_token uuid DEFAULT gen_random_uuid();
 
 -- ── bot_settings (ersätter bot_config + Prisma CustomerSettings) ──
 CREATE TABLE IF NOT EXISTS bot_settings (
@@ -72,6 +73,17 @@ ALTER TABLE bot_settings ADD COLUMN IF NOT EXISTS support_email text NOT NULL DE
 ALTER TABLE bot_settings ADD COLUMN IF NOT EXISTS payment_info text NOT NULL DEFAULT '';
 ALTER TABLE bot_settings ADD COLUMN IF NOT EXISTS delivery_info text NOT NULL DEFAULT '';
 ALTER TABLE bot_settings ADD COLUMN IF NOT EXISTS guarantee_info text NOT NULL DEFAULT '';
+ALTER TABLE bot_settings ADD COLUMN IF NOT EXISTS company_description text NOT NULL DEFAULT '';
+ALTER TABLE bot_settings ADD COLUMN IF NOT EXISTS owner_name text NOT NULL DEFAULT '';
+ALTER TABLE bot_settings ADD COLUMN IF NOT EXISTS brand_color text NOT NULL DEFAULT '';
+ALTER TABLE bot_settings ADD COLUMN IF NOT EXISTS closed_dates text NOT NULL DEFAULT '';
+ALTER TABLE bot_settings ADD COLUMN IF NOT EXISTS cancellation_policy text NOT NULL DEFAULT '';
+
+-- ── Index för vanliga queries ──────────────────────────────────────
+CREATE INDEX IF NOT EXISTS idx_knowledge_base_customer_id ON knowledge_base (customer_id);
+CREATE INDEX IF NOT EXISTS idx_leads_customer_id          ON leads (customer_id);
+CREATE INDEX IF NOT EXISTS idx_leads_customer_status      ON leads (customer_id, status);
+CREATE INDEX IF NOT EXISTS idx_bot_settings_customer_id   ON bot_settings (customer_id);
 
 -- ── Row Level Security (ingen publik access — bara service role) ──
 ALTER TABLE customers      ENABLE ROW LEVEL SECURITY;
