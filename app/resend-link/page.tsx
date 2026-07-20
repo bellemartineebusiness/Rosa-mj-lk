@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function ResendLinkPage() {
+function ResendLinkForm() {
   const searchParams = useSearchParams();
   const invalidLink  = searchParams.get("reason") === "invalid";
   const [email, setEmail]   = useState("");
@@ -83,5 +83,13 @@ export default function ResendLinkPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function ResendLinkPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#0a0a0a]" />}>
+      <ResendLinkForm />
+    </Suspense>
   );
 }

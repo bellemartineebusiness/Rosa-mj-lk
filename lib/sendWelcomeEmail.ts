@@ -1,18 +1,17 @@
 import { Resend } from "resend";
 
-export async function sendWelcomeEmail(email: string, customerId: string, loginToken?: string) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bellemartinee.se";
-  const dashboardUrl = loginToken
-    ? `${siteUrl}/dashboard/${customerId}?token=${loginToken}`
-    : `${siteUrl}/dashboard/${customerId}`;
-  const embedCode = `&lt;script src="${siteUrl}/widget.js" data-customer-id="${customerId}"&gt;&lt;/script&gt;`;
+export function buildWelcomeEmail(opts: {
+  customerId: string;
+  loginToken?: string;
+  siteUrl?: string;
+}): { subject: string; html: string } {
+  const siteUrl = opts.siteUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? "https://bellemartinee.se";
+  const dashboardUrl = opts.loginToken
+    ? `${siteUrl}/dashboard/${opts.customerId}?token=${opts.loginToken}`
+    : `${siteUrl}/dashboard/${opts.customerId}`;
+  const embedCode = `&lt;script src="${siteUrl}/widget.js" data-customer-id="${opts.customerId}"&gt;&lt;/script&gt;`;
 
-  await resend.emails.send({
-    from: "Belle Martineé <info@bellemartinee.se>",
-    to: email,
-    subject: "Din chattbot är redo — här är din länk",
-    html: `
+  const html = `
 <!DOCTYPE html>
 <html lang="sv">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -78,6 +77,19 @@ export async function sendWelcomeEmail(email: string, customerId: string, loginT
   </table>
 </body>
 </html>
-    `,
+    `;
+
+  return { subject: "Din chattbot är redo — här är din länk", html };
+}
+
+export async function sendWelcomeEmail(email: string, customerId: string, loginToken?: string) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const { subject, html } = buildWelcomeEmail({ customerId, loginToken });
+
+  await resend.emails.send({
+    from: "Belle Martineé <info@bellemartinee.se>",
+    to: email,
+    subject,
+    html,
   });
 }

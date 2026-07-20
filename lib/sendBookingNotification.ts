@@ -91,33 +91,29 @@ function buildCalendarUrls(name: string, company: string, date: string, time: st
   return { gcal, outlook, apple };
 }
 
-export async function sendBookingNotification({
-  to,
-  companyName,
-  name,
-  date,
-  time,
-  bookingId,
-  baseUrl = "https://bellemartinee.se",
-}: {
-  to: string;
+type BookingParams = {
   companyName: string;
   name: string;
   date: string;
   time: string;
   bookingId: string;
   baseUrl?: string;
-}) {
-  const ics      = generateIcs(name, companyName, date, time, bookingId);
-  const icsB64   = Buffer.from(ics).toString("base64");
-  const safeName = name.toLowerCase().replace(/\s+/g, "-");
-  const { gcal, outlook, apple } = buildCalendarUrls(name, companyName, date, time, bookingId, baseUrl);
+};
 
-  await getResend().emails.send({
-    from: "Belle Martineé <info@bellemartinee.se>",
-    to,
-    subject: `Ny bokning – ${name}${date ? ` · ${date}` : ""}${time ? ` ${time}` : ""}`,
-    html: `
+export function buildBookingNotification({
+  companyName,
+  name,
+  date,
+  time,
+  bookingId,
+  baseUrl = "https://bellemartinee.se",
+}: BookingParams): { subject: string; html: string; ics: string } {
+  const ics = generateIcs(name, companyName, date, time, bookingId);
+  const { gcal, outlook } = buildCalendarUrls(name, companyName, date, time, bookingId, baseUrl);
+
+  const subject = `Ny bokning – ${name}${date ? ` · ${date}` : ""}${time ? ` ${time}` : ""}`;
+
+  const html = `
 <!DOCTYPE html>
 <html lang="sv">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -163,11 +159,25 @@ export async function sendBookingNotification({
     </td></tr>
   </table>
 </body>
-</html>`,
+</html>`;
+
+  return { subject, html, ics };
+}
+
+export async function sendBookingNotification(params: BookingParams & { to: string }) {
+  const { to, name } = params;
+  const { subject, html, ics } = buildBookingNotification(params);
+  const safeName = name.toLowerCase().replace(/\s+/g, "-");
+
+  await getResend().emails.send({
+    from: "Belle Martineé <info@bellemartinee.se>",
+    to,
+    subject,
+    html,
     attachments: [
       {
         filename: `bokning-${safeName}.ics`,
-        content: icsB64,
+        content: Buffer.from(ics).toString("base64"),
       },
     ],
   });

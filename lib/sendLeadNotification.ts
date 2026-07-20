@@ -16,17 +16,16 @@ type LeadData = {
 };
 
 // ── Mail till företagaren ─────────────────────────────────────
-export async function sendLeadNotification({
-  to,
+export function buildLeadNotification({
   companyName,
   action,
   data,
 }: {
-  to: string;
   companyName: string;
   action: "lead" | "booking" | "cancel" | "change";
   data: LeadData;
-}) {
+}): { subject: string; html: string } {
+  void companyName;
   const subjectMap: Record<string, string> = {
     booking: `Ny bokningsförfrågan – ${data.name || "Okänd"}${data.date ? ` · ${data.date}` : ""}`,
     lead:    `Ny kontakt – ${data.name || "Okänd"}`,
@@ -62,11 +61,7 @@ export async function sendLeadNotification({
       </td></tr>`)
     .join("");
 
-  await getResend().emails.send({
-    from: "Belle Martineé <info@bellemartinee.se>",
-    to,
-    subject,
-    html: `
+  const html = `
 <!DOCTYPE html>
 <html lang="sv">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -102,23 +97,33 @@ export async function sendLeadNotification({
     </td></tr>
   </table>
 </body>
-</html>`,
+</html>`;
+
+  return { subject, html };
+}
+
+export async function sendLeadNotification({
+  to,
+  companyName,
+  action,
+  data,
+}: {
+  to: string;
+  companyName: string;
+  action: "lead" | "booking" | "cancel" | "change";
+  data: LeadData;
+}) {
+  const { subject, html } = buildLeadNotification({ companyName, action, data });
+  await getResend().emails.send({
+    from: "Belle Martineé <info@bellemartinee.se>",
+    to,
+    subject,
+    html,
   });
 }
 
 // ── Bekräftelsemail till kunden ───────────────────────────────
-export async function sendCustomerConfirmation({
-  to,
-  customerName,
-  companyName,
-  action,
-  notes,
-  date,
-  time,
-  bookingId,
-  baseUrl = "https://bellemartinee.se",
-}: {
-  to: string;
+type ConfirmationParams = {
   customerName: string;
   companyName: string;
   action: "lead" | "booking";
@@ -127,7 +132,17 @@ export async function sendCustomerConfirmation({
   time?: string;
   bookingId?: string;
   baseUrl?: string;
-}) {
+};
+
+export function buildCustomerConfirmation({
+  customerName,
+  companyName,
+  action,
+  notes,
+  date,
+  time,
+  bookingId,
+}: ConfirmationParams): { subject: string; html: string; ics: string | null } {
   const isBooking = action === "booking";
 
   const bookingDetails = isBooking && (date || time) ? `
@@ -135,10 +150,6 @@ export async function sendCustomerConfirmation({
       ${date ? `<tr><td style="padding:4px 0;"><span style="font-size:12px;color:#8e8e93;display:inline-block;width:60px;">Datum</span><span style="font-size:13px;font-weight:500;color:#1d1d1f;">${date}</span></td></tr>` : ""}
       ${time ? `<tr><td style="padding:4px 0;"><span style="font-size:12px;color:#8e8e93;display:inline-block;width:60px;">Tid</span><span style="font-size:13px;font-weight:500;color:#1d1d1f;">${time}</span></td></tr>` : ""}
     </table>` : "";
-
-  const appleUrl = isBooking && date && bookingId
-    ? `${baseUrl}/api/ics?name=${encodeURIComponent(customerName)}&company=${encodeURIComponent(companyName)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time ?? "")}&uid=${bookingId}`.replace(/^https?:\/\//, "webcal://")
-    : null;
 
   const gcalUrl = isBooking && date ? (() => {
     const title   = encodeURIComponent(`Bokning hos ${companyName}`);
@@ -178,8 +189,8 @@ export async function sendCustomerConfirmation({
     </table>
     <p style="margin:0 0 24px;font-size:12px;color:#8e8e93;">📅 Apple Calendar: kalenderinbjudan finns bifogad i mailet.</p>` : "";
 
-  // Generera ICS-bilaga för bokningar
-  const icsAttachment = isBooking && date && bookingId ? (() => {
+  // Generera ICS-innehåll för bokningar
+  const ics: string | null = isBooking && date && bookingId ? (() => {
     const summary  = `Bokning hos ${companyName}`;
     const uid      = bookingId;
     const dtstamp  = new Date().toISOString().replace(/[-:.]/g, "").slice(0, 15) + "Z";
@@ -195,7 +206,7 @@ export async function sendCustomerConfirmation({
       dtstart = `DTSTART;VALUE=DATE:${d}`;
       dtend   = `DTEND;VALUE=DATE:${d}`;
     }
-    const ics = [
+    return [
       "BEGIN:VCALENDAR", "VERSION:2.0", "CALSCALE:GREGORIAN",
       "PRODID:-//Belle Martineé//Chattbot//EN",
       "BEGIN:VTIMEZONE", "TZID:Europe/Stockholm",
@@ -209,15 +220,11 @@ export async function sendCustomerConfirmation({
       `DESCRIPTION:Bokad via chattbot`,
       "END:VEVENT", "END:VCALENDAR",
     ].join("\r\n");
-    return { filename: "bokning.ics", content: Buffer.from(ics).toString("base64") };
   })() : null;
 
-  await getResend().emails.send({
-    from: `${companyName} <info@bellemartinee.se>`,
-    to,
-    subject: isBooking ? "Din bokningsförfrågan är mottagen" : "Tack för ditt meddelande",
-    ...(icsAttachment ? { attachments: [icsAttachment] } : {}),
-    html: `
+  const subject = isBooking ? "Din bokningsförfrågan är mottagen" : "Tack för ditt meddelande";
+
+  const html = `
 <!DOCTYPE html>
 <html lang="sv">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -257,7 +264,20 @@ export async function sendCustomerConfirmation({
     </td></tr>
   </table>
 </body>
-</html>`,
+</html>`;
+
+  return { subject, html, ics };
+}
+
+export async function sendCustomerConfirmation(params: ConfirmationParams & { to: string }) {
+  const { to, companyName } = params;
+  const { subject, html, ics } = buildCustomerConfirmation(params);
+  await getResend().emails.send({
+    from: `${companyName} <info@bellemartinee.se>`,
+    to,
+    subject,
+    html,
+    ...(ics ? { attachments: [{ filename: "bokning.ics", content: Buffer.from(ics).toString("base64") }] } : {}),
   });
 }
 
