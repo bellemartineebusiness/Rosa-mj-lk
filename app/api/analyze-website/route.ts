@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { checkRateLimit } from "@/lib/rateLimit";
+import { checkRateLimit, checkGlobalBudget } from "@/lib/rateLimit";
 
 function getIp(req: NextRequest) {
   return req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? req.headers.get("x-real-ip") ?? "unknown";
@@ -33,6 +33,10 @@ async function fetchPage(url: string): Promise<string> {
 export async function POST(req: NextRequest) {
   const ipLimit = await checkRateLimit(getIp(req));
   if (!ipLimit.allowed) return NextResponse.json({ error: "För många förfrågningar. Försök igen senare." }, { status: 429 });
+
+  // Globalt månadstak — webbanalys drar mest tokens, väger därför 10
+  const budget = await checkGlobalBudget(10);
+  if (!budget.allowed) return NextResponse.json({ error: budget.reason }, { status: 429 });
 
   const { url } = await req.json();
   if (!url) return NextResponse.json({ error: "URL saknas" }, { status: 400 });

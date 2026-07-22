@@ -1,21 +1,17 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
-import { checkRateLimit } from "@/lib/rateLimit";
+import { checkRateLimit, checkGlobalBudget } from "@/lib/rateLimit";
 import { buildSystemPrompt } from "@/lib/buildSystemPrompt";
 import { createServiceClient } from "@/lib/supabase";
 import { getSlotsForDate, formatDate } from "@/lib/availability";
 
 const DEMO_CUSTOMER_ID = "0fb2136e-af25-4534-ba57-db34db4dc32a";
 
+// Bara riktiga boknings-/avboknings-flöden går på dyrare Sonnet — allt annat
+// körs på billiga Haiku för att hålla kostnaden nere.
 const COMPLEX_SIGNALS = [
-  "boka", "bokning", "boka tid", "boka in", "ny tid", "lediga tider",
-  "avboka", "avbokning", "omboka", "ombokning", "ändra tid", "flytta",
-  "avbryta", "annullera",
-  "passar", "tveksam", "osäker", "vet inte", "jämför", "varför ska",
-  "är det värt", "värt det", "fungerar det för", "mitt företag", "min bransch",
-  "passa mig", "passa oss", "behöver jag", "skillnad", "istället för",
-  "bättre än", "jämfört med", "övertygad", "rätt val", "tvekar",
-  "hjälp mig förstå", "hur fungerar", "vad menas", "kan ni",
+  "boka", "bokning", "boka tid", "boka in", "lediga tider",
+  "avboka", "avbokning", "omboka", "ombokning", "ändra tid",
 ];
 
 function selectModel(messages: { role: string; content: string }[]): string {
@@ -40,6 +36,12 @@ export async function POST(req: NextRequest) {
   const ipLimit = await checkRateLimit(getIp(req));
   if (!ipLimit.allowed) {
     return NextResponse.json({ error: ipLimit.reason }, { status: 429 });
+  }
+
+  // Globalt månadstak — skyddar mot okontrollerad kostnad
+  const budget = await checkGlobalBudget(1);
+  if (!budget.allowed) {
+    return NextResponse.json({ error: budget.reason }, { status: 429 });
   }
 
   const body = await req.json().catch(() => null);
@@ -101,7 +103,9 @@ export async function POST(req: NextRequest) {
     const response = await new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }).messages.create({
       model,
       max_tokens: 512,
-      system: systemPrompt,
+      // Cacha systemprompten — identisk mellan meddelanden i samma konversation,
+      // så upprepade turer kostar bara ~10% av full input-kostnad.
+      system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
       messages,
     }, { timeout: 25000 });
 

@@ -9,13 +9,28 @@ let cooldownLimiter: Ratelimit | null = null;
 let minuteLimiter: Ratelimit | null = null;
 let dayLimiter: Ratelimit | null = null;
 let bookingLimiter: Ratelimit | null = null;
+let budgetRedis: Redis | null = null;
 
 if (useRedis) {
   const redis = Redis.fromEnv();
+  budgetRedis = redis;
   cooldownLimiter = new Ratelimit({ redis, limiter: Ratelimit.fixedWindow(1, "2 s"),   prefix: "rl:cd" });
   minuteLimiter  = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(10, "1 m"),  prefix: "rl:min" });
   dayLimiter     = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(100, "24 h"), prefix: "rl:day" });
   bookingLimiter = new Ratelimit({ redis, limiter: Ratelimit.fixedWindow(3, "24 h"),    prefix: "rl:book" });
+}
+
+// ── Global månads-budget (kill switch för publika AI-endpoints) ──────────
+// En delad räknare per månad. Varje AI-anrop "kostar" ett antal enheter
+// (chatt = 1, webbanalys = 10). Överskrids taket slutar de publika
+// endpointsen anropa Claude tills månaden nollställs. Justera med env-varen
+// AI_MONTHLY_LIMIT (standard 5000 enheter).
+const AI_MONTHLY_LIMIT = Number(process.env.AI_MONTHLY_LIMIT ?? 5000);
+let memBudget = { month: "", count: 0 };
+
+function currentMonthKey() {
+  const d = new Date();
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
 }
 
 // ── In-memory fallback (local dev) ───────────────────────
@@ -78,6 +93,34 @@ export async function checkRateLimit(ip: string): Promise<RateLimitResult> {
   if (!day.success) return { allowed: false, reason: "Daggränsen nådd. Försök igen imorgon." };
 
   return { allowed: true };
+}
+
+/**
+ * Global månads-tak för publika AI-endpoints. Anropa FÖRE varje Claude-anrop.
+ * `cost` = hur tungt anropet är (chatt = 1, webbanalys = 10).
+ * Returnerar { allowed: false } när månadstaket är slut → hoppa över AI-anropet.
+ */
+export async function checkGlobalBudget(cost = 1): Promise<RateLimitResult> {
+  const denied = { allowed: false as const, reason: "Tjänsten är tillfälligt otillgänglig. Försök igen senare." };
+  const month = currentMonthKey();
+
+  if (!useRedis) {
+    if (memBudget.month !== month) memBudget = { month, count: 0 };
+    if (memBudget.count >= AI_MONTHLY_LIMIT) return denied;
+    memBudget.count += cost;
+    return { allowed: true };
+  }
+
+  try {
+    const key = `budget:public:${month}`;
+    const count = await budgetRedis!.incrby(key, cost);
+    if (count === cost) await budgetRedis!.expire(key, 60 * 60 * 24 * 40); // ~40 dagar
+    if (count > AI_MONTHLY_LIMIT) return denied;
+    return { allowed: true };
+  } catch {
+    // Redis nere → blockera hellre än att riskera okontrollerad kostnad
+    return denied;
+  }
 }
 
 export async function checkBookingRateLimit(ip: string): Promise<RateLimitResult> {

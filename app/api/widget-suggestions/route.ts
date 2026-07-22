@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { createServiceClient } from "@/lib/supabase";
-import { checkRateLimit } from "@/lib/rateLimit";
+import { checkRateLimit, checkGlobalBudget } from "@/lib/rateLimit";
 
 function getIp(req: NextRequest) {
   return req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? req.headers.get("x-real-ip") ?? "unknown";
@@ -24,6 +24,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       suggestions: ["Vad kan ni hjälpa mig med?", "Hur bokar jag en tid?", "Vad kostar det?"],
     });
+  }
+
+  // Globalt månadstak — vid slut, fall tillbaka på statiska förslag (inget AI-anrop)
+  const budget = await checkGlobalBudget(1);
+  if (!budget.allowed) {
+    return NextResponse.json({ suggestions: ["Vad kan ni hjälpa mig med?", "Hur bokar jag en tid?", "Vad kostar det?"] });
   }
 
   const kbText = kb.map((k) => `## ${k.title}\n${k.content}`).join("\n\n").slice(0, 4000);

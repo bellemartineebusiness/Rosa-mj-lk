@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase";
 import { buildSystemPrompt } from "@/lib/buildSystemPrompt";
-import { checkRateLimit, checkBookingRateLimit } from "@/lib/rateLimit";
+import { checkRateLimit, checkBookingRateLimit, checkGlobalBudget } from "@/lib/rateLimit";
 import { sendBookingNotification } from "@/lib/sendBookingNotification";
 import { sendLeadNotification, sendCustomerConfirmation, sendSlackNotification } from "@/lib/sendLeadNotification";
 import { createCalendarEvent, checkSlotAvailability, getFreeSlots } from "@/lib/googleCalendar";
@@ -11,17 +11,11 @@ import { logger } from "@/lib/logger";
 
 function getClaude() { return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }); }
 
+// Bara riktiga boknings-/avboknings-flöden kräver Sonnet (steg-för-steg-logik).
+// Allt annat körs på billiga Haiku för att hålla kostnaden nere.
 const COMPLEX_SIGNALS = [
-  // Bokningsflöde — kräver Sonnet för att följa steg-för-steg-instruktioner
-  "boka", "bokning", "boka tid", "boka in", "ny tid", "lediga tider",
-  "avboka", "avbokning", "omboka", "ombokning", "ändra tid", "flytta",
-  "avbryta", "annullera",
-  // Säljfrågor
-  "passar", "tveksam", "osäker", "vet inte", "jämför", "varför ska",
-  "är det värt", "värt det", "fungerar det för", "mitt företag", "min bransch",
-  "passa mig", "passa oss", "behöver jag", "skillnad", "istället för",
-  "bättre än", "jämfört med", "övertygad", "rätt val", "tvekar",
-  "hjälp mig förstå", "hur fungerar", "vad menas", "kan ni",
+  "boka", "bokning", "boka tid", "boka in", "lediga tider",
+  "avboka", "avbokning", "omboka", "ombokning", "ändra tid",
 ];
 
 function selectModel(messages: { role: string; content: string }[]): string {
@@ -109,6 +103,14 @@ export async function POST(req: NextRequest) {
     });
   }
 
+  // ── 5b. Globalt månadstak (hård kostnadsspärr för hela appen) ──
+  const budget = await checkGlobalBudget(1);
+  if (!budget.allowed) {
+    return NextResponse.json({
+      reply: "Vi kan tyvärr inte svara just nu. Kontakta oss gärna direkt så hjälper vi dig.",
+    });
+  }
+
   // ── 6. Bygg system prompt ─────────────────────────────────
   let systemPrompt: string;
   try {
@@ -160,7 +162,9 @@ export async function POST(req: NextRequest) {
     const response = await getClaude().messages.create({
       model,
       max_tokens: 512,
-      system: systemPrompt,
+      // Cacha systemprompten — identisk mellan meddelanden i samma konversation,
+      // så upprepade turer kostar bara ~10% av full input-kostnad.
+      system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
       messages,
     }, { timeout: 25000 });
     raw = response.content
