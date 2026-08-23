@@ -20,12 +20,13 @@ if (useRedis) {
   bookingLimiter = new Ratelimit({ redis, limiter: Ratelimit.fixedWindow(3, "24 h"),    prefix: "rl:book" });
 }
 
-// ── Global månads-budget (kill switch för publika AI-endpoints) ──────────
-// En delad räknare per månad. Varje AI-anrop "kostar" ett antal enheter
-// (chatt = 1, webbanalys = 10). Överskrids taket slutar de publika
-// endpointsen anropa Claude tills månaden nollställs. Justera med env-varen
-// AI_MONTHLY_LIMIT (standard 5000 enheter).
-const AI_MONTHLY_LIMIT = Number(process.env.AI_MONTHLY_LIMIT ?? 5000);
+// ── Global månads-budget (kill switch för PUBLIKA AI-endpoints) ──────────
+// Skyddar bara gratisdelarna mot missbruk: demo-boten (1 enhet/meddelande) och
+// webbanalysen (10 enheter). Betalande kunder styrs INTE av detta — de har sin
+// egen kvot (1000 medd/mån = Starter-planen). Överskrids taket slutar de
+// publika endpointsen anropa Claude tills månaden nollställs.
+// ~2000 enheter på Sonnet ≈ ~200 kr demo-tak. Justera med env-varen AI_MONTHLY_LIMIT.
+const AI_MONTHLY_LIMIT = Number(process.env.AI_MONTHLY_LIMIT ?? 2000);
 let memBudget = { month: "", count: 0 };
 
 function currentMonthKey() {

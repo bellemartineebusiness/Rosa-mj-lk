@@ -27,12 +27,14 @@ export const metadata: Metadata = {
     template: "%s | Belle Martineé",
   },
   description:
-    "Belle Martineé bygger AI-chattbottar för företag. Automatisera kundservice, bokning och försäljning. Baserade i Stockholm — leverans på 5 dagar.",
+    "Belle Martineé bygger AI-chattbottar för företag i alla branscher. Automatisera kundservice, bokning och leadinsamling dygnet runt. Från 1 599 kr/mån, gratis installation, igång samma dag.",
   keywords: [
     "AI chattbot",
     "chattbot företag",
     "AI kundservice",
-    "automatisering",
+    "chattbot till hemsida",
+    "automatiserad bokning",
+    "kundtjänst automatisering",
     "AI-bot Stockholm",
     "Belle Martineé",
   ],
@@ -45,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "Belle Martineé",
     title: "Belle Martineé | AI-chattbottar för företag i Stockholm",
     description:
-      "Vi bygger AI-chattbottar som automatiserar kundservice, bokning och försäljning. Leverans på 5 dagar från 4 000 kr.",
+      "AI-chattbottar som automatiserar kundservice, bokning och försäljning dygnet runt. Från 1 599 kr/mån, gratis installation, igång samma dag.",
     images: [
       {
         url: "/hero-desktop.png",
@@ -59,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Belle Martineé | AI-chattbottar för företag i Stockholm",
     description:
-      "Vi bygger AI-chattbottar som automatiserar kundservice, bokning och försäljning. Leverans på 5 dagar från 4 000 kr.",
+      "AI-chattbottar som automatiserar kundservice, bokning och försäljning dygnet runt. Från 1 599 kr/mån, gratis installation, igång samma dag.",
     images: ["/hero-desktop.png"],
   },
   robots: {
@@ -105,7 +107,7 @@ export default function RootLayout({
                 addressCountry: "SE",
               },
               areaServed: "SE",
-              priceRange: "fr. 4 000 kr",
+              priceRange: "fr. 1 599 kr/mån",
               openingHours: "Mo-Fr 09:00-18:00",
             }),
           }}

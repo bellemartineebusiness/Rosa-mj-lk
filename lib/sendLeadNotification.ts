@@ -42,7 +42,7 @@ export function buildLeadNotification({
     data.name     && ["Namn",        data.name],
     data.email    && ["E-post",      data.email],
     data.phone    && ["Telefon",     data.phone],
-    data.notes    && ["Meddelande",  data.notes],
+    data.notes    && [(isBooking || isCancel || isChange) ? "Avser" : "Meddelande", data.notes],
     (isBooking || isCancel) && data.date && ["Datum", data.date],
     (isBooking || isCancel) && data.time && ["Tid",   data.time],
     isChange && data.date     && ["Gammalt datum", data.date],

@@ -38,7 +38,7 @@ export default function CalendarSetup() {
               <span className="text-sm font-medium text-secondary-foreground">Kunden bokar via chatten</span>
             </div>
             <p className="text-xs text-[#6e6e73] font-normal leading-relaxed pl-8">
-              Kunden chattar med din bot, väljer klippning, färgning eller annan behandling och bokar en tid direkt.
+              Kunden chattar med din bot, väljer tjänst och bokar en tid direkt.
             </p>
           </div></FadeUp>
 

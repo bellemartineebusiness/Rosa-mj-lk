@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase";
 import { buildSystemPrompt } from "@/lib/buildSystemPrompt";
-import { checkRateLimit, checkBookingRateLimit, checkGlobalBudget } from "@/lib/rateLimit";
+import { checkRateLimit, checkBookingRateLimit } from "@/lib/rateLimit";
 import { sendBookingNotification } from "@/lib/sendBookingNotification";
 import { sendLeadNotification, sendCustomerConfirmation, sendSlackNotification } from "@/lib/sendLeadNotification";
 import { createCalendarEvent, checkSlotAvailability, getFreeSlots } from "@/lib/googleCalendar";
@@ -11,18 +11,9 @@ import { logger } from "@/lib/logger";
 
 function getClaude() { return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }); }
 
-// Bara riktiga boknings-/avboknings-flöden kräver Sonnet (steg-för-steg-logik).
-// Allt annat körs på billiga Haiku för att hålla kostnaden nere.
-const COMPLEX_SIGNALS = [
-  "boka", "bokning", "boka tid", "boka in", "lediga tider",
-  "avboka", "avbokning", "omboka", "ombokning", "ändra tid",
-];
-
-function selectModel(messages: { role: string; content: string }[]): string {
-  const last = [...messages].reverse().find((m) => m.role === "user")?.content?.toLowerCase() ?? "";
-  return COMPLEX_SIGNALS.some((s) => last.includes(s))
-    ? "claude-sonnet-4-6"
-    : "claude-haiku-4-5-20251001";
+// Hela boten kör på Sonnet 4.6 — bättre svenska än Haiku.
+function selectModel(_messages: { role: string; content: string }[]): string {
+  return "claude-sonnet-4-6";
 }
 
 const MAX_MESSAGE_LENGTH = 500;
@@ -103,13 +94,9 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  // ── 5b. Globalt månadstak (hård kostnadsspärr för hela appen) ──
-  const budget = await checkGlobalBudget(1);
-  if (!budget.allowed) {
-    return NextResponse.json({
-      reply: "Vi kan tyvärr inte svara just nu. Kontakta oss gärna direkt så hjälper vi dig.",
-    });
-  }
+  // Betalande kunder styrs av sin egen månadskvot (1000 medd = Starter-planen)
+  // ovan — inte av det delade globala taket, så publik demo-trafik aldrig kan
+  // blockera en betalande kund.
 
   // ── 6. Bygg system prompt ─────────────────────────────────
   let systemPrompt: string;
@@ -298,6 +285,12 @@ export async function POST(req: NextRequest) {
 
   // ── 11. Avbokning / ändring ───────────────────────────────
   if (action === "cancel" && data.name) {
+    // Hämta tjänsten från ursprungsbokningen så mailet visar VAD som avbokats
+    let sel = db.from("leads").select("notes").eq("customer_id", customer.id).eq("status", "active").ilike("name", data.name);
+    if (data.date) sel = sel.eq("date", data.date);
+    const { data: original } = await sel.limit(1).maybeSingle();
+    const cancelData = { ...data, notes: data.notes || original?.notes || "" };
+
     let q = db
       .from("leads")
       .update({ status: "cancelled" })
@@ -306,11 +299,17 @@ export async function POST(req: NextRequest) {
       .ilike("name", data.name);
     if (data.date) q = q.eq("date", data.date);
     await q;
-    if (notifyTo) sendLeadNotification({ to: notifyTo, companyName, action: "cancel", data }).catch((e) => logger.error("notification_failed", { error: String(e) }));
-    if (slackUrl) sendSlackNotification({ webhookUrl: slackUrl, companyName, action: "cancel", data }).catch((e) => logger.error("notification_failed", { error: String(e) }));
+    if (notifyTo) sendLeadNotification({ to: notifyTo, companyName, action: "cancel", data: cancelData }).catch((e) => logger.error("notification_failed", { error: String(e) }));
+    if (slackUrl) sendSlackNotification({ webhookUrl: slackUrl, companyName, action: "cancel", data: cancelData }).catch((e) => logger.error("notification_failed", { error: String(e) }));
   }
 
   if (action === "change" && data.name && data.new_date) {
+    // Hämta tjänsten från ursprungsbokningen så mailet visar VAD som ändrats
+    let sel = db.from("leads").select("notes").eq("customer_id", customer.id).eq("status", "active").ilike("name", data.name);
+    if (data.date) sel = sel.eq("date", data.date);
+    const { data: original } = await sel.limit(1).maybeSingle();
+    const changeData = { ...data, notes: data.notes || original?.notes || "" };
+
     let q = db
       .from("leads")
       .update({ date: data.new_date, time: data.new_time || null })
@@ -319,8 +318,8 @@ export async function POST(req: NextRequest) {
       .ilike("name", data.name);
     if (data.date) q = q.eq("date", data.date);
     await q;
-    if (notifyTo) sendLeadNotification({ to: notifyTo, companyName, action: "change", data }).catch((e) => logger.error("notification_failed", { error: String(e) }));
-    if (slackUrl) sendSlackNotification({ webhookUrl: slackUrl, companyName, action: "change", data }).catch((e) => logger.error("notification_failed", { error: String(e) }));
+    if (notifyTo) sendLeadNotification({ to: notifyTo, companyName, action: "change", data: changeData }).catch((e) => logger.error("notification_failed", { error: String(e) }));
+    if (slackUrl) sendSlackNotification({ webhookUrl: slackUrl, companyName, action: "change", data: changeData }).catch((e) => logger.error("notification_failed", { error: String(e) }));
   }
 
   // ── 12. Notiser (fire-and-forget) ─────────────────────────
@@ -334,6 +333,7 @@ export async function POST(req: NextRequest) {
           to: notifyTo, companyName,
           name: data.name || "Okänd",
           date: data.date || "", time: data.time || "",
+          notes: data.notes || "",
           bookingId: newLeadId,
         }).catch((e) => logger.error("notification_failed", { error: String(e) }));
       } else {

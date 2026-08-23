@@ -13,11 +13,11 @@ export default function Statement() {
             <p className="text-[11px] font-normal uppercase tracking-[0.2em] text-[#8e8e93] mb-6">Kort och gott</p>
             <h2 className="text-4xl md:text-[3.25rem] font-semibold text-secondary-foreground tracking-tight leading-tight mb-6">
               Byggd för<br />
-              <span className="italic font-normal">frisörsalonger.</span><br />
+              <span className="italic font-normal">ditt företag.</span><br />
               <span className="text-secondary-foreground/40 font-normal">Dygnet runt.</span>
             </h2>
             <p className="text-[#6e6e73] text-lg font-normal leading-relaxed mb-8 max-w-sm">
-              Du berättar om din salong. Vi bygger en AI-chattbot som bokar tider och svarar på frågor om priser och öppettider. Dygnet runt.
+              Du berättar om ditt företag. Vi bygger en AI-chattbot som bokar tider och svarar på frågor om priser, tjänster och öppettider. Dygnet runt.
             </p>
             <a
               href="#kontakt"

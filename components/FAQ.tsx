@@ -19,11 +19,11 @@ const faqs = [
   },
   {
     q: "Behöver jag kunna koda?",
-    a: "Nej. Du behöver inte göra något tekniskt. Vi sköter installationen på din salong hemsida åt dig.",
+    a: "Nej. Du behöver inte göra något tekniskt. Vi sköter installationen på din hemsida åt dig.",
   },
   {
     q: "Hur snabbt kan jag komma igång?",
-    a: "Direkt efter köpet. Du fyller i din salong i dashboarden och vi installerar boten på din hemsida samma dag.",
+    a: "Direkt efter köpet. Du fyller i ditt företag i dashboarden och vi installerar boten på din hemsida samma dag.",
   },
   {
     q: "Vad kan boten svara på?",

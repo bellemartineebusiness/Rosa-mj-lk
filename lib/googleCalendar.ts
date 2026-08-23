@@ -131,8 +131,8 @@ export async function createCalendarEvent({
   await calendar.events.insert({
     calendarId: "primary",
     requestBody: {
-      summary: `Bokning – ${name}`,
-      description: notes || "Bokad via chattbot",
+      summary: `${notes ? `${notes} – ` : "Bokning – "}${name}`,
+      description: notes ? `${notes} – bokad av ${name} via chattbot` : `Bokad av ${name} via chattbot`,
       start: { dateTime: start.toISOString(), timeZone: "Europe/Stockholm" },
       end:   { dateTime: end.toISOString(),   timeZone: "Europe/Stockholm" },
     },

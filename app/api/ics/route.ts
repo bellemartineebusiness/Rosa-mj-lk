@@ -31,8 +31,9 @@ export async function GET(req: NextRequest) {
   const date    = searchParams.get("date")    || "";
   const time    = searchParams.get("time")    || "";
   const uid     = searchParams.get("uid")     || Date.now().toString();
+  const notes   = searchParams.get("notes")   || "";
 
-  const summary = company ? `Bokning hos ${company}` : `Bokning`;
+  const summary = notes ? `${notes} – ${name}` : (company ? `Bokning hos ${company}` : `Bokning`);
 
   let dtstart: string;
   let dtend: string;

@@ -68,19 +68,19 @@ export default function Projects() {
                     </div>
                   </div>
                   <div className="flex flex-col gap-1 ml-7">
-                    {["Boka klippning", "Se prislista"].map((s) => (
+                    {["Boka tid", "Se priser"].map((s) => (
                       <span key={s} className="self-start text-[10px] px-2.5 py-1.5 rounded-xl border border-[#E8440A] text-[#E8440A] bg-white leading-none">{s}</span>
                     ))}
                   </div>
                   <div className="flex justify-end">
                     <div className="bg-[#E8440A] text-white text-xs px-3 py-2 rounded-2xl rounded-br-sm max-w-[75%] leading-relaxed">
-                      Vad kostar en klippning?
+                      Vad kostar det hos er?
                     </div>
                   </div>
                   <div className="flex items-end gap-1.5">
                     <div className="w-5 h-5 rounded-full bg-[#E8440A] flex items-center justify-center text-white text-[9px] font-bold shrink-0">B</div>
                     <div className="bg-white text-secondary-foreground text-xs px-3 py-2 rounded-2xl rounded-bl-sm shadow-sm border border-[#f0f0f0] max-w-[80%] leading-relaxed">
-                      En klippning kostar från 450 kr. Vill du boka?
+                      Våra priser börjar från 450 kr. Vill du boka?
                     </div>
                   </div>
                 </div>

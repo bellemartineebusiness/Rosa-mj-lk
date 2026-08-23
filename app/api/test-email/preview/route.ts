@@ -9,7 +9,7 @@ const SAMPLE = {
   name: "Anna Svensson",
   email: "anna@exempel.se",
   phone: "070-123 45 67",
-  notes: "Vill boka klippning och färg.",
+  notes: "Klippning & färg",
   date: "2026-07-25",
   time: "14:00",
   bookingId: "preview",
@@ -28,6 +28,7 @@ function render(type: string, base: string): Built | null {
         name: SAMPLE.name,
         date: SAMPLE.date,
         time: SAMPLE.time,
+        notes: SAMPLE.notes,
         bookingId: SAMPLE.bookingId,
         baseUrl: base,
       });
@@ -47,13 +48,13 @@ function render(type: string, base: string): Built | null {
       return buildLeadNotification({
         companyName: SAMPLE.companyName,
         action: "cancel",
-        data: { name: SAMPLE.name, date: SAMPLE.date, time: SAMPLE.time },
+        data: { name: SAMPLE.name, notes: SAMPLE.notes, date: SAMPLE.date, time: SAMPLE.time },
       });
     case "change":
       return buildLeadNotification({
         companyName: SAMPLE.companyName,
         action: "change",
-        data: { name: SAMPLE.name, date: SAMPLE.date, time: SAMPLE.time, new_date: "2026-07-28", new_time: "11:00" },
+        data: { name: SAMPLE.name, notes: SAMPLE.notes, date: SAMPLE.date, time: SAMPLE.time, new_date: "2026-07-28", new_time: "11:00" },
       });
     case "confirmation":
       return buildCustomerConfirmation({
@@ -79,7 +80,6 @@ function render(type: string, base: string): Built | null {
 const MENU: { type: string; label: string; who: string }[] = [
   { type: "welcome", label: "Välkomstmail", who: "till kunden efter köp" },
   { type: "booking", label: "Bokningsnotis", who: "till ägaren · med .ics" },
-  { type: "booking-request", label: "Bokningsförfrågan", who: "till ägaren" },
   { type: "lead", label: "Lead-notis", who: "till ägaren" },
   { type: "cancel", label: "Avbokning", who: "till ägaren" },
   { type: "change", label: "Ändrad bokning", who: "till ägaren" },

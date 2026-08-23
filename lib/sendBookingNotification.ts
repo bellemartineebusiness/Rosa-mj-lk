@@ -28,8 +28,8 @@ function formatIcsDate(date: Date) {
   return date.toISOString().replace(/[-:.]/g, "").slice(0, 15) + "Z";
 }
 
-function generateIcs(name: string, company: string, date: string, time: string, uid: string): string {
-  const summary = company ? `Bokning hos ${company}` : `Bokning`;
+function generateIcs(name: string, company: string, date: string, time: string, uid: string, notes = ""): string {
+  const summary = notes ? `${notes} – ${name}` : (company ? `Bokning hos ${company}` : `Bokning`);
   let dtstart: string;
   let dtend: string;
 
@@ -68,10 +68,10 @@ function generateIcs(name: string, company: string, date: string, time: string, 
   ].join("\r\n");
 }
 
-function buildCalendarUrls(name: string, company: string, date: string, time: string, uid: string, baseUrl: string) {
-  const title   = encodeURIComponent(`Bokning hos ${company || name}`);
+function buildCalendarUrls(name: string, company: string, date: string, time: string, uid: string, baseUrl: string, notes = "") {
+  const title   = encodeURIComponent(notes ? `${notes} – ${name}` : `Bokning hos ${company || name}`);
   const details = encodeURIComponent(`Bokad av ${name} via chattbot`);
-  const apple   = `${baseUrl}/api/ics?name=${encodeURIComponent(name)}&company=${encodeURIComponent(company)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}&uid=${uid}`.replace(/^https?:\/\//, "webcal://");
+  const apple   = `${baseUrl}/api/ics?name=${encodeURIComponent(name)}&company=${encodeURIComponent(company)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}&uid=${uid}&notes=${encodeURIComponent(notes)}`.replace(/^https?:\/\//, "webcal://");
 
   let gcal    = "https://calendar.google.com/calendar/render?action=TEMPLATE";
   let outlook = "https://outlook.live.com/calendar/0/deeplink/compose";
@@ -97,6 +97,7 @@ type BookingParams = {
   date: string;
   time: string;
   bookingId: string;
+  notes?: string;
   baseUrl?: string;
 };
 
@@ -106,12 +107,13 @@ export function buildBookingNotification({
   date,
   time,
   bookingId,
+  notes,
   baseUrl = "https://bellemartinee.se",
 }: BookingParams): { subject: string; html: string; ics: string } {
-  const ics = generateIcs(name, companyName, date, time, bookingId);
-  const { gcal, outlook } = buildCalendarUrls(name, companyName, date, time, bookingId, baseUrl);
+  const ics = generateIcs(name, companyName, date, time, bookingId, notes);
+  const { gcal, outlook } = buildCalendarUrls(name, companyName, date, time, bookingId, baseUrl, notes);
 
-  const subject = `Ny bokning – ${name}${date ? ` · ${date}` : ""}${time ? ` ${time}` : ""}`;
+  const subject = `Ny bokning – ${name}${notes ? ` · ${notes}` : ""}${date ? ` · ${date}` : ""}${time ? ` ${time}` : ""}`;
 
   const html = `
 <!DOCTYPE html>
@@ -132,6 +134,7 @@ export function buildBookingNotification({
             <h1 style="margin:0 0 24px;font-size:22px;font-weight:600;color:#1d1d1f;letter-spacing:-0.5px;">${name}</h1>
 
             <table cellpadding="0" cellspacing="0" style="background:#f5f5f7;border-radius:12px;padding:16px 20px;margin-bottom:24px;width:100%;">
+              ${notes ? `<tr><td style="padding:5px 0;"><span style="font-size:12px;color:#8e8e93;display:inline-block;width:60px;">Avser</span><span style="font-size:13px;font-weight:500;color:#1d1d1f;">${notes}</span></td></tr>` : ""}
               ${date ? `<tr><td style="padding:5px 0;"><span style="font-size:12px;color:#8e8e93;display:inline-block;width:60px;">Datum</span><span style="font-size:13px;font-weight:500;color:#1d1d1f;">${date}</span></td></tr>` : ""}
               ${time ? `<tr><td style="padding:5px 0;"><span style="font-size:12px;color:#8e8e93;display:inline-block;width:60px;">Tid</span><span style="font-size:13px;font-weight:500;color:#1d1d1f;">${time}</span></td></tr>` : ""}
             </table>

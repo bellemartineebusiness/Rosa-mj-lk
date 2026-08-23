@@ -7,18 +7,9 @@ import { getSlotsForDate, formatDate } from "@/lib/availability";
 
 const DEMO_CUSTOMER_ID = "0fb2136e-af25-4534-ba57-db34db4dc32a";
 
-// Bara riktiga boknings-/avboknings-flöden går på dyrare Sonnet — allt annat
-// körs på billiga Haiku för att hålla kostnaden nere.
-const COMPLEX_SIGNALS = [
-  "boka", "bokning", "boka tid", "boka in", "lediga tider",
-  "avboka", "avbokning", "omboka", "ombokning", "ändra tid",
-];
-
-function selectModel(messages: { role: string; content: string }[]): string {
-  const last = [...messages].reverse().find((m) => m.role === "user")?.content?.toLowerCase() ?? "";
-  return COMPLEX_SIGNALS.some((s) => last.includes(s))
-    ? "claude-sonnet-4-6"
-    : "claude-haiku-4-5-20251001";
+// Hela boten kör på Sonnet 4.6 — bättre svenska än Haiku.
+function selectModel(_messages: { role: string; content: string }[]): string {
+  return "claude-sonnet-4-6";
 }
 
 const MAX_MESSAGE_LENGTH = 500;

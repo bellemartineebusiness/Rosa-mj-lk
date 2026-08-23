@@ -43,7 +43,7 @@ export default function HowItWorks() {
               <span className="text-sm font-medium text-secondary-foreground">AI-chatten är live</span>
             </div>
             <p className="text-xs text-[#6e6e73] font-normal leading-relaxed pl-8">
-              Chatten dyker upp automatiskt och börjar ta emot bokningar och svara på frågor om klippning, färgning och priser. Dygnet runt.
+              Chatten dyker upp automatiskt och börjar ta emot bokningar och svara på frågor om dina tjänster, tider och priser. Dygnet runt.
             </p>
           </div></FadeUp>
 
