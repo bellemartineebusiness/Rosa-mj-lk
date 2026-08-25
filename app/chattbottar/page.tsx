@@ -2,9 +2,6 @@ import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import ChatDemo from "@/components/ChatDemo";
 
-// Demo-sida för chattboten (statisk). Tvinga ren ombyggnad efter mappflytt.
-export const dynamic = "force-static";
-
 export const metadata = {
   title: "Chattbottar — Se dem i aktion",
   description: "Prova våra AI-chattbottar direkt. Se hur de svarar, bokar och hjälper dina kunder.",
