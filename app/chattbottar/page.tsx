@@ -2,6 +2,9 @@ import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import ChatDemo from "@/components/ChatDemo";
 
+// Rendera live på Vercel istället för statiskt — kringgår trasig statisk cache
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Chattbottar — Se dem i aktion",
   description: "Prova våra AI-chattbottar direkt. Se hur de svarar, bokar och hjälper dina kunder.",
