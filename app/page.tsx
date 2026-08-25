@@ -18,7 +18,7 @@ export default function Home() {
       <main className="flex-1">
         <section className="relative w-full h-screen overflow-hidden">
           <h1 className="sr-only">
-            AI-chattbot för företag i Stockholm — automatisera kundservice, bokning och leadinsamling dygnet runt. Från 1 599 kr/mån, gratis installation.
+            AI-chattbot för företag i Stockholm — automatisera kundservice, bokning och leadinsamling dygnet runt. Från 799 kr/mån, gratis installation.
           </h1>
           <picture className="w-full h-full">
             <source media="(min-width: 768px)" srcSet="/hero-orange.png" />
