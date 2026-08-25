@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     template: "%s | Belle Martineé",
   },
   description:
-    "Belle Martineé bygger AI-chattbottar för företag i alla branscher. Automatisera kundservice, bokning och leadinsamling dygnet runt. Från 799 kr/mån, gratis installation, igång samma dag.",
+    "Belle Martineé bygger AI-chattbottar för företag i alla branscher. Automatisera kundservice, bokning och leadinsamling dygnet runt. Från 699 kr/mån, gratis installation, igång samma dag.",
   keywords: [
     "AI chattbot",
     "chattbot företag",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "Belle Martineé",
     title: "Belle Martineé | AI-chattbottar för företag i Stockholm",
     description:
-      "AI-chattbottar som automatiserar kundservice, bokning och försäljning dygnet runt. Från 799 kr/mån, gratis installation, igång samma dag.",
+      "AI-chattbottar som automatiserar kundservice, bokning och försäljning dygnet runt. Från 699 kr/mån, gratis installation, igång samma dag.",
     images: [
       {
         url: "/hero-desktop.png",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Belle Martineé | AI-chattbottar för företag i Stockholm",
     description:
-      "AI-chattbottar som automatiserar kundservice, bokning och försäljning dygnet runt. Från 799 kr/mån, gratis installation, igång samma dag.",
+      "AI-chattbottar som automatiserar kundservice, bokning och försäljning dygnet runt. Från 699 kr/mån, gratis installation, igång samma dag.",
     images: ["/hero-desktop.png"],
   },
   robots: {
@@ -107,7 +107,7 @@ export default function RootLayout({
                 addressCountry: "SE",
               },
               areaServed: "SE",
-              priceRange: "fr. 799 kr/mån",
+              priceRange: "fr. 699 kr/mån",
               openingHours: "Mo-Fr 09:00-18:00",
             }),
           }}

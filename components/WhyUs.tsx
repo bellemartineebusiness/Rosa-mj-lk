@@ -90,7 +90,7 @@ export default function WhyUs() {
               </div>
               <div className="flex items-center justify-between border-b border-[#d8d8d8] pb-3">
                 <span className="text-[#6e6e73] text-sm">Månadsabonnemang</span>
-                <span className="text-secondary-foreground text-sm font-medium">799 kr</span>
+                <span className="text-secondary-foreground text-sm font-medium">699 kr</span>
               </div>
               <div className="flex items-center justify-between border-b border-[#d8d8d8] pb-3">
                 <span className="text-[#6e6e73] text-sm">Setup & lansering</span>
@@ -110,7 +110,7 @@ export default function WhyUs() {
               </div>
               <div className="mt-2 pt-4 border-t border-[#f0f0f0] flex items-center justify-between">
                 <span className="text-secondary-foreground text-sm font-medium">Totalt per månad</span>
-                <span className="text-[#E8440A] text-xl font-semibold">799 kr</span>
+                <span className="text-[#E8440A] text-xl font-semibold">699 kr</span>
               </div>
               <div className="bg-[#E8440A]/8 rounded-2xl px-4 py-3">
                 <p className="text-[#E8440A] text-sm font-medium">Du sparar ~38 000 kr per månad</p>
