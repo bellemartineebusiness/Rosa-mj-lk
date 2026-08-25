@@ -17,7 +17,7 @@ function selectModel(_messages: { role: string; content: string }[]): string {
 }
 
 const MAX_MESSAGE_LENGTH = 500;
-const MAX_HISTORY        = 10;
+const MAX_HISTORY        = 30;
 const MONTHLY_LIMIT      = 1000;
 
 function getIp(req: NextRequest) {
