@@ -79,7 +79,7 @@ export default function Services() {
               icon={<Layers className="w-8 h-8" />}
               name="Growth"
               subtitle="Komplett lösning"
-              price="1 599 kr"
+              price="1 299 kr"
               periodLabel="/ mån"
               features={[
                 { label: "Allt i Starter" },
@@ -98,7 +98,7 @@ export default function Services() {
               icon={<Globe className="w-8 h-8" />}
               name="Pro"
               subtitle="Enterprise-lösning"
-              price="2 499 kr"
+              price="1 999 kr"
               periodLabel="/ mån"
               features={[
                 { label: "Allt i Growth" },
