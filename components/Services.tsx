@@ -49,7 +49,7 @@ export default function Services() {
             <div className="inline-flex flex-col items-center gap-2 bg-[#fff8f5] border border-[#E8440A]/20 rounded-2xl px-8 py-5 max-w-lg mx-auto">
               <p className="text-base font-semibold text-secondary-foreground tracking-tight">Prova AI-chatboten gratis i 30 dagar.</p>
               <p className="text-sm text-[#6e6e73] font-normal leading-relaxed text-center">
-                Efter 30 dagar dras 699 kr/mån automatiskt. Avsluta när som helst innan dess och du betalar ingenting.
+                Efter 30 dagar dras 1 495 kr/mån automatiskt. Avsluta när som helst innan dess och du betalar ingenting.
               </p>
             </div>
           </div></FadeUp>
@@ -60,7 +60,7 @@ export default function Services() {
               icon={<MessageCircle className="w-8 h-8" />}
               name="Starter"
               subtitle="Kom igång direkt"
-              price="699 kr"
+              price="1 495 kr"
               periodLabel="/ mån"
               features={[
                 { label: "Gratis installation & onboarding" },
@@ -79,7 +79,7 @@ export default function Services() {
               icon={<Layers className="w-8 h-8" />}
               name="Growth"
               subtitle="Komplett lösning"
-              price="1 299 kr"
+              price="1 995 kr"
               periodLabel="/ mån"
               features={[
                 { label: "Allt i Starter" },
@@ -98,7 +98,7 @@ export default function Services() {
               icon={<Globe className="w-8 h-8" />}
               name="Pro"
               subtitle="Enterprise-lösning"
-              price="1 999 kr"
+              price="2 995 kr"
               periodLabel="/ mån"
               features={[
                 { label: "Allt i Growth" },

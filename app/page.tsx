@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Services from "@/components/Services";
 import Projects from "@/components/Projects";
+import Websites from "@/components/Websites";
 import Statement from "@/components/Statement";
 import FAQ from "@/components/FAQ";
 import HowItWorks from "@/components/HowItWorks";
@@ -18,7 +19,7 @@ export default function Home() {
       <main className="flex-1">
         <section className="relative w-full h-screen overflow-hidden">
           <h1 className="sr-only">
-            AI-chattbot för företag i Stockholm — automatisera kundservice, bokning och leadinsamling dygnet runt. Från 699 kr/mån, gratis installation.
+            AI-chattbot för företag i Stockholm — automatisera kundservice, bokning och leadinsamling dygnet runt. Från 1 495 kr/mån, gratis installation.
           </h1>
           <picture className="w-full h-full">
             <source media="(min-width: 768px)" srcSet="/hero-orange.png" />
@@ -44,6 +45,7 @@ export default function Home() {
         <Intro />
         <Guarantee />
         <Services />
+        <Websites />
         <FAQ />
         <Projects />
         <Statement />

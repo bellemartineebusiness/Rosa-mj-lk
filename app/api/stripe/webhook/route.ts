@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { createServiceClient } from "@/lib/supabase";
 import { sendWelcomeEmail } from "@/lib/sendWelcomeEmail";
+import { sendOwnerNotification } from "@/lib/sendOwnerNotification";
 import { logger } from "@/lib/logger";
 import Stripe from "stripe";
 
@@ -48,6 +49,9 @@ export async function POST(req: NextRequest) {
         sendWelcomeEmail(email, existing.id, reactivated?.login_token ?? undefined).catch((e) =>
           logger.error("welcome_email_failed", { error: String(e) })
         );
+        sendOwnerNotification({ customerEmail: email, customerId: existing.id, loginToken: reactivated?.login_token ?? undefined, isReactivation: true }).catch((e) =>
+          logger.error("owner_notification_failed", { error: String(e) })
+        );
       } else {
         const { data: created } = await db
           .from("customers")
@@ -60,6 +64,9 @@ export async function POST(req: NextRequest) {
           logger.info("bot_created", { event: "new", customerId: created.id, email });
           sendWelcomeEmail(email, created.id, created.login_token ?? undefined).catch((e) =>
             logger.error("welcome_email_failed", { error: String(e) })
+          );
+          sendOwnerNotification({ customerEmail: email, customerId: created.id, loginToken: created.login_token ?? undefined, isReactivation: false }).catch((e) =>
+            logger.error("owner_notification_failed", { error: String(e) })
           );
         }
       }
